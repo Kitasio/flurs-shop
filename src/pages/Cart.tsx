@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Minus, Plus, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -45,7 +46,7 @@ function Cart() {
     // Basic validation
     const requiredFields: (keyof ShippingInfo)[] = ['email', 'name', 'address1', 'city', 'country', 'zip'];
     const missingFields = requiredFields.filter(field => !shippingInfo[field]);
-    
+
     if (missingFields.length > 0) {
       setError(`Please fill in the following fields: ${missingFields.join(', ')}`);
       return;
@@ -73,7 +74,8 @@ function Cart() {
       {/* Header */}
       <header className="p-6 flex items-center">
         <button
-          onClick={() => navigate('/shop')}
+          type="button"
+          onClick={() => navigate('/')}
           className="flex items-center text-gray-800 hover:text-gray-600 transition-colors"
         >
           <ArrowLeft className="mr-2" size={20} />
