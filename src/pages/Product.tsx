@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import CartIcon from '../components/CartIcon';
 import { fetchProducts } from '../api/btcpay';
-import { Product as ProductType } from '../types/btcpay';
+import type { Product as ProductType } from '../types/btcpay';
 
 export default function Product() {
   const navigate = useNavigate();
@@ -71,7 +71,8 @@ export default function Product() {
       {/* Header */}
       <header className="p-6 flex items-center">
         <button
-          onClick={() => navigate('/shop')}
+          type="button"
+          onClick={() => navigate('/')}
           className="flex items-center text-gray-800 hover:text-gray-600 transition-colors"
         >
           <ArrowLeft className="mr-2" size={20} />
@@ -98,10 +99,10 @@ export default function Product() {
           {/* Right Column - Product Info */}
           <div className="flex flex-col">
             <h2 className="text-2xl font-serif mb-2">{product.name}</h2>
-            <p className="text-lg text-gray-700 mb-6">from {product.price.toLocaleString()} {product.currency}</p>
-            
+            <p className="text-lg text-gray-700 mb-6">{product.price.toLocaleString()} {product.currency}</p>
+
             <p className="text-gray-600 mb-6">{product.description}</p>
-            
+
             <p className="text-gray-600 mb-6 whitespace-pre-wrap">
               {product.details[0]}
             </p>
@@ -142,12 +143,13 @@ export default function Product() {
                   id="quantity"
                   min="1"
                   value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+                  onChange={(e) => setQuantity(Number.parseInt(e.target.value, 10))}
                   className="w-32 p-2 border border-gray-300 rounded bg-gray-100"
                 />
               </div>
 
               <button
+                type="button"
                 onClick={handleAddToCart}
                 className="w-full bg-gray-900 text-white py-3 px-6 rounded hover:bg-gray-800 transition-colors"
               >
@@ -157,7 +159,7 @@ export default function Product() {
 
             <div className="mt-8 text-sm text-gray-500">
               {product.details.slice(1).map((detail, index) => (
-                <p key={index} className="mb-2">{detail}</p>
+                <p key={`index-${index}-detail-${detail}`} className="mb-2">{detail}</p>
               ))}
             </div>
           </div>

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
 import CartIcon from '../components/CartIcon';
 import { fetchProducts } from '../api/btcpay';
-import { Product } from '../types/btcpay';
+import type { Product } from '../types/btcpay';
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -48,14 +47,7 @@ export default function Shop() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="p-4 sm:p-8 flex items-center">
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center text-gray-800 hover:text-gray-600 transition-colors"
-        >
-          <ArrowLeft className="mr-2" size={24} />
-          <span className="font-serif italic text-lg">Back</span>
-        </button>
-        <h1 className="text-3xl sm:text-4xl font-serif italic text-gray-800 flex-1 text-center">Flurs</h1>
+        <h1 className="text-3xl sm:text-4xl font-serif italic text-gray-800 flex-1">Flurs</h1>
         <CartIcon />
       </header>
 
@@ -64,8 +56,9 @@ export default function Shop() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 sm:gap-6">
           {products.map((product) => (
             <button
+              type="button"
               key={product.id}
-              onClick={() => navigate(`/shop/${product.id}`)}
+              onClick={() => navigate(`/${product.id}`)}
               className="group text-left w-full"
             >
               <div className="aspect-square bg-gray-50 mb-4 overflow-hidden rounded-lg shadow-sm">
@@ -77,7 +70,7 @@ export default function Shop() {
               </div>
               <div className="px-2">
                 <h3 className="font-serif text-xl sm:text-lg text-gray-900 mb-2">{product.name}</h3>
-                <p className="text-lg sm:text-base text-gray-500">from {product.price.toLocaleString()} {currency}</p>
+                <p className="text-lg sm:text-base text-gray-500">{product.price.toLocaleString()} {currency}</p>
               </div>
             </button>
           ))}
