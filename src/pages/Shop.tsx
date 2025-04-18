@@ -61,11 +61,11 @@ export default function Shop() {
               onClick={() => navigate(`/${product.id}`)}
               className="group text-left w-full"
             >
-              <div className="aspect-square bg-gray-50 mb-4 overflow-hidden rounded-lg shadow-sm">
+              <div className="aspect-square mb-4 overflow-hidden rounded-lg shadow-sm">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-contain p-6 group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div className="px-2">

@@ -1,4 +1,4 @@
-import { BTCPayPosResponse, BTCPayProduct, Product, BTCPayInvoiceRequest, BTCPayInvoiceResponse } from '../types/btcpay';
+import type { BTCPayPosResponse, BTCPayProduct, Product, BTCPayInvoiceRequest, BTCPayInvoiceResponse } from '../types/btcpay';
 
 const API_URL = import.meta.env.VITE_BTCPAY_API_URL;
 const API_KEY = import.meta.env.VITE_BTCPAY_API_KEY;
@@ -49,7 +49,7 @@ function transformBTCPayProduct(item: BTCPayProduct, currency: string): Product 
   return {
     id: item.id,
     name: item.title.toUpperCase(),
-    price: parseInt(item.price),
+    price: Number.parseInt(item.price),
     currency,
     image: item.image,
     description: 'Limited edition art print.',
@@ -125,7 +125,7 @@ export async function createInvoice(
 
   try {
     console.log('Creating invoice with payload:', JSON.stringify(payload, null, 2));
-    
+
     const response = await fetch(
       `${API_URL}/api/v1/stores/${STORE_ID}/invoices`,
       {

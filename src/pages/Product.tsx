@@ -86,12 +86,12 @@ export default function Product() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Product Image */}
-          <div className="sticky top-8 h-fit">
+          <div className="h-fit">
             <div className="bg-gray-50 rounded-lg overflow-hidden">
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-contain p-8"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>
