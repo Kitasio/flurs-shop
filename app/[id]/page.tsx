@@ -6,20 +6,7 @@ import Header from '../../components/Header'; // Import Header to use it here
 import ProductClient from './ProductClient'; // Import the client component
 
 interface ProductPageProps {
-  params: { id: string };
-}
-
-// Optional: Generate static paths at build time
-export async function generateStaticParams() {
-  try {
-    const { products } = await fetchProducts();
-    return products.map((product) => ({
-      id: product.id,
-    }));
-  } catch (error) {
-    console.error("Failed to generate static params:", error);
-    return []; // Return empty array on error
-  }
+  params: Promise<{ id: string }>;
 }
 
 // Revalidate data periodically (e.g., every hour)
@@ -27,7 +14,8 @@ export const revalidate = 3600;
 
 // This is the main Server Component for the product page
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = params;
+  const { id } = await params;
+
   let product: Product | undefined;
   let error: string | null = null;
 

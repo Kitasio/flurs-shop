@@ -41,7 +41,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// Re-export font variables for use in Tailwind config if needed
-export const fontSans = inter;
-export const fontSerif = playfair;
