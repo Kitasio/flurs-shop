@@ -70,7 +70,7 @@ export default function Shop() {
               </div>
               <div className="px-2">
                 <h3 className="font-serif text-xl sm:text-lg text-gray-900 mb-2">{product.name}</h3>
-                <p className="text-lg sm:text-base text-gray-500">{product.price.toLocaleString()} {currency}</p>
+                <p className="text-lg sm:text-base text-gray-500">{product.price} {currency}</p>
               </div>
             </button>
           ))}
