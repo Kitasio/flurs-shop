@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '../context/CartContext';
-import Header from '../components/Header';
 
 // Example using Inter for sans-serif and Playfair Display for serif/brand
 const inter = Inter({
@@ -34,8 +33,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-white text-gray-900">
         {/* CartProvider needs to be a Client Component boundary */}
         <CartProvider>
-           {/* Header is a Server Component */}
-          <Header />
+          {/* Header is a Server Component */}
           <main>{children}</main>
           {/* TODO: Add Footer if needed */}
         </CartProvider>

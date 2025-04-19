@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (error) {
     // Render error state (could be a dedicated component)
     return (
-       <>
+      <>
         {/* Render header with back button even on error */}
         <Header showBackButton={true} />
         <div className="min-h-[calc(100vh-150px)] flex items-center justify-center px-4">
@@ -69,7 +69,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Product Image */}
-          <div className="h-fit sticky top-8"> {/* Make image sticky on larger screens */}
+          <div className="h-fit top-8"> {/* Make image sticky on larger screens */}
             <div className="bg-gray-50 rounded-lg overflow-hidden aspect-square relative shadow-sm">
               <Image
                 src={product.image}
