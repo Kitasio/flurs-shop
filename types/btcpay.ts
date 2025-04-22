@@ -69,6 +69,14 @@ export interface ShippingInfo {
   phone?: string; // Optional
 }
 
+// Type for the specific structure used within metadata.posData
+export interface BTCPayPosData {
+  cart: BTCPayCartItem[];
+  subTotal: number;
+  shippingCost: number;
+  total: number;
+  // Add other fields if needed by BTCPay POS app or for records
+}
 
 export interface BTCPayInvoiceRequest {
   metadata: {
@@ -83,14 +91,17 @@ export interface BTCPayInvoiceRequest {
     buyerCountry?: string;
     buyerPhone?: string;
     physical?: boolean;
-    // Using Record<string, any> for flexibility as BTCPay might change this
-    posData: Record<string, any>;
-    // Using Record<string, any> for flexibility
+    // Use the specific type for posData
+    posData: BTCPayPosData;
+    // Using Record<string, any> for flexibility for less critical data
     receiptData?: Record<string, any>;
     // Add orderId for better tracking if needed
     orderId?: string;
     // Include cart items directly in metadata for easier reference
     cartItems?: BTCPayCartItem[];
+    // Add fields explicitly added in the implementation
+    shippingCost?: number;
+    shippingCountry?: string;
   };
   checkout?: {
     redirectURL?: string; // URL to redirect after payment

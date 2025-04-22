@@ -78,20 +78,28 @@ function transformBTCPayProduct(item: BTCPayProduct, currency: string): Product 
   };
 }
 
+// ... (transformBTCPayProduct remains the same)
+
 
 export async function createInvoice(
   items: CartItem[],
-  shippingInfo: ShippingInfo
+  shippingInfo: ShippingInfo,
+  shippingCost: number // Add shippingCost parameter
 ): Promise<string> {
 
-  const total = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  // Calculate item total
+  const itemTotal = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
   const currency = items[0]?.product.currency;
 
   if (!currency) {
     throw new Error("Cannot create invoice with empty cart or missing currency.");
   }
 
+  // Calculate grand total including shipping
+  const grandTotal = itemTotal + shippingCost;
+
   const btcPayCartItems: BTCPayCartItem[] = items.map(item => ({
+    // ... (mapping remains the same)
     id: item.product.id,
     count: item.quantity,
     image: item.product.image,
@@ -107,7 +115,7 @@ export async function createInvoice(
 
   const payload: BTCPayInvoiceRequest = {
     metadata: {
-      itemDesc: `Order from Flurs Shop (${items.length} items)`,
+      itemDesc: `Order from Flurs Shop (${items.length} items + Shipping)`, // Update description
       buyerEmail: shippingInfo.email,
       buyerName: shippingInfo.name,
       buyerAddress1: shippingInfo.address1,
@@ -118,27 +126,25 @@ export async function createInvoice(
       buyerCountry: shippingInfo.country,
       buyerPhone: shippingInfo.phone,
       physical: true,
-      // Include structured cart items and total in posData
       posData: {
         cart: btcPayCartItems,
-        total: total,
-        subTotal: total,
-        // Add other fields if needed by BTCPay POS app or for records
+        subTotal: itemTotal, // Keep subtotal without shipping
+        shippingCost: shippingCost, // Add shipping cost explicitly
+        total: grandTotal, // Total including shipping
       },
-      // Optionally include cart items directly in metadata as well
-      cartItems: btcPayCartItems,
+      cartItems: btcPayCartItems, // Keep original cart items if needed elsewhere
+      // Add shipping cost to top-level metadata too if desired
+      shippingCost: shippingCost,
+      shippingCountry: shippingInfo.country,
     },
-    // Optional: Redirect URL after payment completion
-    // checkout: {
-    //   redirectURL: `${process.env.NEXT_PUBLIC_BASE_URL}/order-confirmation/{InvoiceId}`
-    // },
-    amount: total,
+    // checkout: { ... }, // Optional redirect URL
+    amount: grandTotal, // Use the grand total for the invoice amount
     currency: currency
   };
 
   try {
-    console.log('Creating invoice for store:', STORE_ID);
-    // console.log('Creating invoice with payload:', JSON.stringify(payload, null, 2));
+    console.log('Creating invoice for store:', STORE_ID, 'Amount:', grandTotal, currency);
+    // console.log('Creating invoice with payload:', JSON.stringify(payload, null, 2)); // Use if debugging payload
 
     const response = await fetch(
       `${API_URL}/api/v1/stores/${STORE_ID}/invoices`,
@@ -169,7 +175,7 @@ export async function createInvoice(
     }
 
     const data: BTCPayInvoiceResponse = await response.json();
-    console.log('Invoice created successfully:', data.id);
+    console.log('Invoice created successfully:', data.id, 'Checkout Link:', data.checkoutLink);
     return data.checkoutLink;
   } catch (error) {
     console.error('Error creating invoice:', error);

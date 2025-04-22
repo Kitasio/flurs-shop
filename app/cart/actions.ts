@@ -2,6 +2,8 @@
 
 import { createInvoice } from '../../lib/btcpay'; // Server-side function
 import type { CartItem, ShippingInfo } from '../../types/btcpay';
+// Import the server-side function to get shipping cost
+import { getShippingCost } from '../../config/shipping';
 
 // Define the expected state for the form action
 interface CheckoutFormState {
@@ -39,18 +41,28 @@ export async function processCheckout(
   const missingFields = requiredFields.filter(field => !shippingInfo[field]);
 
   if (missingFields.length > 0) {
-    // TODO: Implement field-specific errors if desired
-    return { success: false, message: `Missing required fields: ${missingFields.join(', ')}` };
+    const message = `Missing required fields: ${missingFields.join(', ')}. ${missingFields.includes('country') ? 'Please select a shipping country.' : ''}`;
+    return { success: false, message: message.trim() };
   }
 
-  // Validate email format (basic)
+  // Validate email format
   if (!/\S+@\S+\.\S+/.test(shippingInfo.email)) {
     return { success: false, message: "Invalid email address format." };
   }
 
+  // --- Calculate Shipping Cost ---
+  const shippingCost = getShippingCost(shippingInfo.country);
+  // You could add extra validation here if needed, e.g., ensure country is supported
+  // if (!supportedCountries.includes(shippingInfo.country) && shippingInfo.country !== 'OTHER') {
+  //   return { success: false, message: "Selected country is not supported for shipping." };
+  // }
+  console.log(`Calculated shipping cost for ${shippingInfo.country}: ${shippingCost}`);
+  // --- End Calculate Shipping Cost ---
+
   try {
-    console.log("Processing checkout with items:", cartItems.length, "and shipping info:", shippingInfo.email);
-    const checkoutUrl = await createInvoice(cartItems, shippingInfo);
+    console.log("Processing checkout with items:", cartItems.length, "shipping info:", shippingInfo.email, "and shipping cost:", shippingCost);
+    // Pass shippingCost to createInvoice
+    const checkoutUrl = await createInvoice(cartItems, shippingInfo, shippingCost);
     console.log("Invoice created, returning URL:", checkoutUrl);
 
     // Return success state with the checkout URL

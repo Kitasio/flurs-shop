@@ -1,7 +1,6 @@
 "use client"; // This page relies heavily on client-side hooks and state
 
-import type React from 'react';
-import { useActionState, useEffect } from 'react';
+import React, { useActionState, useEffect, useState } from 'react'; // Import useState
 import { useFormStatus } from 'react-dom';
 import Link from 'next/link'; // Use Next.js Link
 import Image from 'next/image'; // Use Next.js Image
@@ -10,6 +9,8 @@ import { Minus, Plus, X, Loader2 } from 'lucide-react'; // Add Loader icon
 import { useCart } from '../../context/CartContext';
 import Header from '../../components/Header'; // Import Header
 import { processCheckout } from './actions'; // Import the Server Action
+// Import shipping config
+import { supportedCountries, getShippingCost as getClientShippingCost, countryNames } from '../../config/shipping'; // Import countryNames
 
 // Define the initial state for the form action
 const initialCheckoutState = {
@@ -18,20 +19,33 @@ const initialCheckoutState = {
 };
 
 export default function CartPage() {
-  const { items, removeFromCart, updateQuantity, total, itemCount, currency, isCartReady } = useCart();
+  const { items, removeFromCart, updateQuantity, total: itemTotal, itemCount, currency, isCartReady } = useCart(); // Rename total to itemTotal
   const router = useRouter(); // Get router instance
   // useFormState hook to manage form submission state with Server Actions
   const [state, formAction] = useActionState(processCheckout.bind(null, items), initialCheckoutState); // Bind cart items
+
+  // State for selected country and calculated shipping cost
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const [shippingCost, setShippingCost] = useState<number>(0);
+
+  // Calculate grand total
+  const grandTotal = itemTotal + shippingCost;
+
+  // Update shipping cost when country changes
+  useEffect(() => {
+    const cost = getClientShippingCost(selectedCountry);
+    setShippingCost(cost);
+  }, [selectedCountry]);
 
   // Effect to handle redirect on successful checkout
   useEffect(() => {
     if (state.success && state.checkoutUrl) {
       console.log("Checkout successful, redirecting client-side to:", state.checkoutUrl);
       // Optional: Clear cart before redirecting
-      // clearCart();
+      // clearCart(); // Uncomment if you want to clear the cart on success
       router.push(state.checkoutUrl); // Perform client-side redirect
     }
-  }, [state, router]); // Add router and clearCart to dependencies
+  }, [state, router]); // Removed clearCart from deps unless uncommented above
 
   // Display loading indicator while cart is loading from storage
   if (!isCartReady) {
@@ -138,16 +152,55 @@ export default function CartPage() {
                 <InputField label="City *" type="text" name="city" required />
                 <InputField label="State/Province" type="text" name="state" />
                 <InputField label="ZIP/Postal Code *" type="text" name="zip" required />
-                <InputField label="Country *" type="text" name="country" required />
+                {/* --- Country Dropdown --- */}
+                <div>
+                  <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                    Country *
+                  </label>
+                  <select
+                    id="country"
+                    name="country"
+                    value={selectedCountry}
+                    onChange={(e) => setSelectedCountry(e.target.value)}
+                    required
+                    className="w-full p-2 border border-gray-300 rounded bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  >
+                    <option value="" disabled>Select Country...</option>
+                    {supportedCountries.map(code => (
+                      // Use the code as the value, but display the name from countryNames
+                      <option key={code} value={code}>
+                        {countryNames[code] || code} {/* Fallback to code if name is missing */}
+                      </option>
+                    ))}
+                    {/* Optionally add an option for 'Other' if you want to use the DEFAULT rate explicitly */}
+                    {/* <option value="OTHER">Other (Default Rate)</option> */}
+                  </select>
+                </div>
+                {/* --- End Country Dropdown --- */}
                 <InputField label="Phone Number (Optional)" type="tel" name="phone" />
               </div>
 
               {/* Order Summary & Checkout Button */}
               <div className="space-y-6">
                 <h3 className="text-xl font-serif mb-4">Order Summary</h3>
+                {/* Item Subtotal */}
+                <div className="flex justify-between text-gray-700">
+                  <span>Subtotal ({itemCount} items)</span>
+                  <span>{itemTotal.toLocaleString(undefined, { style: 'currency', currency: currency || 'USD', minimumFractionDigits: 2 })}</span>
+                </div>
+                {/* Shipping Cost */}
+                <div className="flex justify-between text-gray-700">
+                  <span>Shipping</span>
+                  <span>
+                    {selectedCountry
+                      ? shippingCost.toLocaleString(undefined, { style: 'currency', currency: currency || 'USD', minimumFractionDigits: 2 })
+                      : 'Select country'}
+                  </span>
+                </div>
+                {/* Grand Total */}
                 <div className="flex justify-between text-lg font-medium border-t pt-4">
-                  <span>Total ({itemCount} items)</span>
-                  <span>{total.toLocaleString(undefined, { style: 'currency', currency: currency || 'USD', minimumFractionDigits: 2 })}</span>
+                  <span>Total</span>
+                  <span>{grandTotal.toLocaleString(undefined, { style: 'currency', currency: currency || 'USD', minimumFractionDigits: 2 })}</span>
                 </div>
 
                 {/* Display Server Action Error Messages */}
@@ -156,7 +209,8 @@ export default function CartPage() {
                 )}
 
                 {/* Checkout Button (uses useFormStatus) */}
-                <CheckoutButton />
+                {/* Disable button if no country is selected */}
+                <CheckoutButton disabled={!selectedCountry} />
               </div>
             </div>
           </form>
@@ -184,16 +238,17 @@ function InputField({ label, type, name, required = false }: { label: string, ty
   );
 }
 
-// Helper component for the submit button to show pending state
-function CheckoutButton() {
-  const { pending } = useFormStatus(); // Hook to check form submission status
+// Update CheckoutButton to accept a disabled prop
+function CheckoutButton({ disabled: externalDisabled = false }: { disabled?: boolean }) {
+  const { pending } = useFormStatus();
+  const isDisabled = pending || externalDisabled; // Combine pending state with external disabled prop
 
   return (
     <button
       type="submit"
-      disabled={pending} // Disable button while form is submitting
+      disabled={isDisabled} // Use combined disabled state
       className="w-full bg-gray-900 text-white py-3 px-6 rounded hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
-      aria-disabled={pending}
+      aria-disabled={isDisabled}
     >
       {pending ? (
         <>
