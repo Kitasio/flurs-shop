@@ -181,20 +181,22 @@ export async function createInvoice(
       buyerCountry: shippingInfo.country,
       buyerPhone: shippingInfo.phone,
       physical: true,
-      posData: JSON.stringify({ // BTCPay expects posData to be a string
-        cart: btcPayCartItems.map(cartItem => ({ // Simplify structure if needed
+      posData: {
+        cart: btcPayCartItems.map(cartItem => ({
           id: cartItem.id,
           title: cartItem.title,
-          price: cartItem.price.value,
+          price: cartItem.price,
           quantity: cartItem.count,
           image: cartItem.image,
-          size: cartItem.size
+          size: cartItem.size,
+          inventory: cartItem.inventory,
+          count: cartItem.count,
         })),
         subTotal: itemTotal,
         shippingCost: shippingCost,
         total: grandTotal,
         // Add any other custom data you want embedded
-      }),
+      },
       // cartItems: btcPayCartItems, // Redundant if using posData string
       // Add shipping cost to top-level metadata too if desired
       shippingCost: shippingCost, // Keep this for potential filtering/reporting
