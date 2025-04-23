@@ -1,8 +1,10 @@
 "use client"; // This component needs client-side hooks (useState, useCart)
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react'; // Import useMemo
 import { useCart } from '../../context/CartContext';
 import type { Product } from '../../types/btcpay';
+// Import the price calculation helper
+import { calculatePrice } from '../../lib/pricing'; // <-- Updated import path
 
 interface ProductClientProps {
   product: Product;
@@ -15,6 +17,17 @@ export default function ProductClient({ product }: ProductClientProps) {
   const [errorMessage, setErrorMessage] = useState('');
   const { addToCart } = useCart();
 
+  // Calculate displayed price based on selected size
+  const displayedPrice = useMemo(() => {
+    // Calculate the price for a single item based on size
+    const singleItemPrice = selectedSize
+      ? calculatePrice(product.price, selectedSize)
+      : product.price; // Use base price if no size selected or size is base
+
+    // Multiply by quantity
+    return singleItemPrice * quantity;
+  }, [product.price, selectedSize, quantity]); // Add quantity to dependency array
+
   const handleAddToCart = () => {
     setErrorMessage(''); // Clear previous error
     setShowSuccessMessage(false); // Hide previous success message
@@ -24,29 +37,31 @@ export default function ProductClient({ product }: ProductClientProps) {
       return;
     }
     if (quantity < 1) {
-        setErrorMessage('Quantity must be at least 1.');
-        return;
+      setErrorMessage('Quantity must be at least 1.');
+      return;
     }
 
     try {
-        addToCart(product, quantity, selectedSize);
-        // Optionally reset form or show success message
-        // setSelectedSize(''); // Keep size selected?
-        // setQuantity(1); // Reset quantity?
-        setShowSuccessMessage(true);
-        // Hide success message after a few seconds
-        setTimeout(() => setShowSuccessMessage(false), 3000);
+      addToCart(product, quantity, selectedSize);
+      // Optionally reset form or show success message
+      // setSelectedSize(''); // Keep size selected?
+      // setQuantity(1); // Reset quantity?
+      setShowSuccessMessage(true);
+      // Hide success message after a few seconds
+      setTimeout(() => setShowSuccessMessage(false), 3000);
     } catch (error) {
-        console.error("Failed to add to cart:", error);
-        setErrorMessage('Could not add item to cart. Please try again.');
+      console.error("Failed to add to cart:", error);
+      setErrorMessage('Could not add item to cart. Please try again.');
     }
   };
 
   return (
     <div className="flex flex-col">
       <h2 className="text-2xl font-serif mb-2">{product.name}</h2>
+      {/* Display dynamic price */}
       <p className="text-lg text-gray-700 mb-6">
-        {product.price.toLocaleString(undefined, { style: 'currency', currency: product.currency, minimumFractionDigits: 2 })}
+        {displayedPrice.toLocaleString(undefined, { style: 'currency', currency: product.currency, minimumFractionDigits: 2 })}
+        {selectedSize && selectedSize !== 'A4' && <span className="text-sm text-gray-500 ml-2">(Size: {selectedSize})</span>}
       </p>
 
       {/* Short Description */}
@@ -80,9 +95,9 @@ export default function ProductClient({ product }: ProductClientProps) {
             id="size"
             value={selectedSize}
             onChange={(e) => {
-                setSelectedSize(e.target.value);
-                setErrorMessage(''); // Clear error when size changes
-                setShowSuccessMessage(false);
+              setSelectedSize(e.target.value);
+              setErrorMessage(''); // Clear error when size changes
+              setShowSuccessMessage(false);
             }}
             required
             className={`w-full p-3 border rounded bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedSize ? 'border-red-500' : 'border-gray-300'}`}
@@ -93,9 +108,9 @@ export default function ProductClient({ product }: ProductClientProps) {
               <option key={size.name} value={size.name}>{size.name}</option>
             ))}
           </select>
-           {errorMessage && !selectedSize && (
-             <p id="size-error" className="text-red-600 text-sm mt-1">{errorMessage}</p>
-           )}
+          {errorMessage && !selectedSize && (
+            <p id="size-error" className="text-red-600 text-sm mt-1">{errorMessage}</p>
+          )}
         </div>
 
         {/* Quantity Selector */}
@@ -124,18 +139,18 @@ export default function ProductClient({ product }: ProductClientProps) {
 
         {/* Success Message */}
         {showSuccessMessage && (
-            <p className="text-green-600 text-sm mt-2 text-center">Item added to cart!</p>
+          <p className="text-green-600 text-sm mt-2 text-center">Item added to cart!</p>
         )}
         {/* General Error Message (e.g., from addToCart failure) */}
         {errorMessage && selectedSize && (
-             <p className="text-red-600 text-sm mt-2 text-center">{errorMessage}</p>
+          <p className="text-red-600 text-sm mt-2 text-center">{errorMessage}</p>
         )}
       </div>
 
       {/* Remaining Details */}
       <div className="mt-8 text-sm text-gray-500 space-y-2">
         {product.details.slice(1).map((detail, index) => (
-          <p key={`detail-${index}`}>{detail}</p>
+          <p key={`detail-${index}-${detail}`}>{detail}</p>
         ))}
       </div>
     </div>

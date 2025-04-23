@@ -66,7 +66,7 @@ export default async function ShopPage() {
                 </h3>
                 {/* Format price properly */}
                 <p className="text-lg sm:text-base text-gray-500">
-                  {product.price.toLocaleString(undefined, { style: 'currency', currency: currency, minimumFractionDigits: 2 })}
+                  From {product.price.toLocaleString(undefined, { style: 'currency', currency: currency, minimumFractionDigits: 2 })}
                 </p>
               </div>
             </Link>

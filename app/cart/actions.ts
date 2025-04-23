@@ -1,6 +1,7 @@
 "use server"; // Mark this module as containing Server Actions
 
 import { createInvoice } from '../../lib/btcpay'; // Server-side function
+// Ensure CartItem type matches the updated definition (includes calculatedPrice)
 import type { CartItem, ShippingInfo } from '../../types/btcpay';
 // Import the server-side function to get shipping cost
 import { getShippingCost } from '../../config/shipping';

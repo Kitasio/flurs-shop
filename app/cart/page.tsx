@@ -98,7 +98,8 @@ export default function CartPage() {
                     </Link>
                     <p className="text-sm text-gray-600">Size: {item.size}</p>
                     <p className="text-sm text-gray-800 sm:hidden mt-1"> {/* Price on mobile */}
-                      {item.product.price.toLocaleString(undefined, { style: 'currency', currency: item.product.currency, minimumFractionDigits: 2 })} each
+                      {/* Display calculated price per item */}
+                      {item.calculatedPrice.toLocaleString(undefined, { style: 'currency', currency: item.product.currency, minimumFractionDigits: 2 })} each
                     </p>
                   </div>
                   {/* Quantity Controls */}
@@ -124,7 +125,8 @@ export default function CartPage() {
                   </div>
                   {/* Price per item group (hidden on mobile) */}
                   <p className="w-28 text-right font-medium hidden sm:block">
-                    {(item.product.price * item.quantity).toLocaleString(undefined, { style: 'currency', currency: item.product.currency, minimumFractionDigits: 2 })}
+                    {/* Display total for line item using calculated price */}
+                    {(item.calculatedPrice * item.quantity).toLocaleString(undefined, { style: 'currency', currency: item.product.currency, minimumFractionDigits: 2 })}
                   </p>
                   {/* Remove Button */}
                   <button

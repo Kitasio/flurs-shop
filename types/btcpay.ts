@@ -36,9 +36,10 @@ export interface Product {
 
 // Type for items in our cart context
 export interface CartItem {
-  product: Product;
+  product: Product; // Contains the BASE price (A4)
   quantity: number;
   size: string;
+  calculatedPrice: number; // Price adjusted for the selected size
 }
 
 // Type for items sent to BTCPay invoice API

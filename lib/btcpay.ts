@@ -1,3 +1,5 @@
+"use server";
+
 import type {
   BTCPayPosResponse,
   BTCPayProduct,
@@ -8,6 +10,7 @@ import type {
   ShippingInfo,
   BTCPayCartItem
 } from '../types/btcpay';
+import { calculatePrice } from './pricing';
 
 // Ensure environment variables are defined
 const API_URL = process.env.BTCPAY_API_URL;
@@ -78,8 +81,6 @@ function transformBTCPayProduct(item: BTCPayProduct, currency: string): Product 
   };
 }
 
-// ... (transformBTCPayProduct remains the same)
-
 
 export async function createInvoice(
   items: CartItem[],
@@ -87,35 +88,89 @@ export async function createInvoice(
   shippingCost: number // Add shippingCost parameter
 ): Promise<string> {
 
-  // Calculate item total
-  const itemTotal = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-  const currency = items[0]?.product.currency;
+  // --- Security Enhancement: Fetch authoritative product data on the server ---
+  const { products: authoritativeProducts, currency } = await fetchProducts();
+  const productMap = new Map(authoritativeProducts.map(p => [p.id, p]));
+
+  // --- Security Enhancement: Recalculate prices using authoritative data ---
+  let itemTotal = 0;
+  const validatedItems: CartItem[] = []; // Store items confirmed to exist
+
+  for (const item of items) {
+    const authoritativeProduct = productMap.get(item.product.id);
+
+    if (!authoritativeProduct) {
+      console.warn(`Product ID ${item.product.id} from cart not found in authoritative list. Skipping.`);
+      continue; // Skip this item or throw an error if preferred
+    }
+
+    // Validate quantity (basic check)
+    if (item.quantity <= 0) {
+      console.warn(`Invalid quantity ${item.quantity} for product ID ${item.product.id}. Skipping.`);
+      continue;
+    }
+
+    // Validate size (ensure it's one of the available sizes for the product)
+    // Note: Assumes authoritativeProduct.sizes is populated correctly.
+    // If sizes aren't fetched, this check might need adjustment or removal.
+    if (!authoritativeProduct.sizes.some(s => s.name === item.size)) {
+      console.warn(`Invalid size "${item.size}" for product ID ${item.product.id}. Skipping.`);
+      continue;
+    }
+
+
+    // Use the authoritative base price and the client-provided size
+    const serverCalculatedPrice = calculatePrice(authoritativeProduct.price, item.size);
+    itemTotal += serverCalculatedPrice * item.quantity;
+
+    // Add the validated item along with its authoritative product data
+    // We replace the potentially manipulated product data from the client item
+    // with the trusted data fetched from the server.
+    validatedItems.push({
+      ...item,
+      product: authoritativeProduct, // Use authoritative product data
+      calculatedPrice: serverCalculatedPrice // Store the server-calculated price
+    });
+  }
+
 
   if (!currency) {
-    throw new Error("Cannot create invoice with empty cart or missing currency.");
+    throw new Error("Cannot create invoice with empty cart, missing currency, or no valid items.");
   }
+  if (validatedItems.length === 0) {
+    throw new Error("No valid items found in the cart to create an invoice.");
+  }
+
 
   // Calculate grand total including shipping
   const grandTotal = itemTotal + shippingCost;
 
-  const btcPayCartItems: BTCPayCartItem[] = items.map(item => ({
-    // ... (mapping remains the same)
-    id: item.product.id,
-    count: item.quantity,
-    image: item.product.image,
-    price: {
-      type: 2, // Custom price type
-      value: item.product.price,
-      formatted: `${item.product.price.toFixed(2)} ${currency}` // Format price
-    },
-    title: item.product.name,
-    inventory: null, // Assuming inventory is not tracked strictly here
-    size: item.size
-  }));
+  // --- Security Enhancement: Use validated items and authoritative data ---
+  const btcPayCartItems: BTCPayCartItem[] = validatedItems.map(item => {
+    // Note: item.product is now the authoritative product data
+    // item.calculatedPrice is the server-calculated price per unit
+    return {
+      id: item.product.id,
+      count: item.quantity,
+      image: item.product.image, // Use authoritative image
+      price: {
+        type: 2, // Custom price type
+        value: item.calculatedPrice, // Use the pre-calculated server price per unit
+        formatted: `${item.calculatedPrice.toFixed(2)} ${currency}` // Format the server price
+      },
+      // Use authoritative name and client-provided size
+      title: `${item.product.name} (${item.size})`,
+      inventory: null, // Assuming inventory is not tracked strictly here
+      size: item.size // Keep size info if needed for posData or metadata
+    };
+  }); // End of map function
+
+  // Calculate total number of items in the cart
+  const totalItemsCount = btcPayCartItems.reduce((sum, item) => sum + item.count, 0);
 
   const payload: BTCPayInvoiceRequest = {
     metadata: {
-      itemDesc: `Order from Flurs Shop (${items.length} items + Shipping)`, // Update description
+      itemDesc: `Order from Flurs Shop (${totalItemsCount} items + Shipping)`, // Update description
       buyerEmail: shippingInfo.email,
       buyerName: shippingInfo.name,
       buyerAddress1: shippingInfo.address1,
@@ -126,16 +181,24 @@ export async function createInvoice(
       buyerCountry: shippingInfo.country,
       buyerPhone: shippingInfo.phone,
       physical: true,
-      posData: {
-        cart: btcPayCartItems,
-        subTotal: itemTotal, // Keep subtotal without shipping
-        shippingCost: shippingCost, // Add shipping cost explicitly
-        total: grandTotal, // Total including shipping
-      },
-      cartItems: btcPayCartItems, // Keep original cart items if needed elsewhere
+      posData: JSON.stringify({ // BTCPay expects posData to be a string
+        cart: btcPayCartItems.map(cartItem => ({ // Simplify structure if needed
+          id: cartItem.id,
+          title: cartItem.title,
+          price: cartItem.price.value,
+          quantity: cartItem.count,
+          image: cartItem.image,
+          size: cartItem.size
+        })),
+        subTotal: itemTotal,
+        shippingCost: shippingCost,
+        total: grandTotal,
+        // Add any other custom data you want embedded
+      }),
+      // cartItems: btcPayCartItems, // Redundant if using posData string
       // Add shipping cost to top-level metadata too if desired
-      shippingCost: shippingCost,
-      shippingCountry: shippingInfo.country,
+      shippingCost: shippingCost, // Keep this for potential filtering/reporting
+      shippingCountry: shippingInfo.country, // Keep this for potential filtering/reporting
     },
     // checkout: { ... }, // Optional redirect URL
     amount: grandTotal, // Use the grand total for the invoice amount

@@ -3,6 +3,8 @@
 import type React from 'react';
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { Product, CartItem } from '../types/btcpay';
+// Import the price calculation helper
+import { calculatePrice } from '../lib/pricing'; // <-- Updated import path
 
 interface CartContextType {
   items: CartItem[];
@@ -35,7 +37,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       console.error("Failed to load cart from localStorage:", error);
       // Handle potential errors (e.g., corrupted data, storage unavailable)
     } finally {
-       setIsCartReady(true); // Mark cart as ready after attempting load
+      setIsCartReady(true); // Mark cart as ready after attempting load
     }
   }, []);
 
@@ -44,11 +46,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     // Only save if the cart is ready (i.e., initial load is complete)
     // This prevents overwriting the stored cart with an empty initial state
     if (isCartReady) {
-       try {
-         localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-       } catch (error) {
-         console.error("Failed to save cart to localStorage:", error);
-       }
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+      } catch (error) {
+        console.error("Failed to save cart to localStorage:", error);
+      }
     }
   }, [items, isCartReady]);
 
@@ -65,11 +67,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           ...updatedItems[existingItemIndex],
           quantity: updatedItems[existingItemIndex].quantity + quantity,
         };
+        // Price doesn't change when only quantity is updated for an existing item/size combo
         return updatedItems;
-      } else {
-        // Add new item
-        return [...prevItems, { product, quantity, size }];
       }
+      // Add new item with calculated price
+      const calculatedPrice = calculatePrice(product.price, size);
+      return [...prevItems, { product, quantity, size, calculatedPrice }];
     });
   }, []);
 
@@ -90,17 +93,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const clearCart = useCallback(() => {
-      setItems([]);
-      try {
-          localStorage.removeItem(CART_STORAGE_KEY);
-      } catch (error) {
-          console.error("Failed to clear cart in localStorage:", error);
-      }
+    setItems([]);
+    try {
+      localStorage.removeItem(CART_STORAGE_KEY);
+    } catch (error) {
+      console.error("Failed to clear cart in localStorage:", error);
+    }
   }, []);
 
 
+  // Calculate total based on the calculated price for each item's size
   const total = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (sum, item) => sum + item.calculatedPrice * item.quantity,
     0
   );
 
