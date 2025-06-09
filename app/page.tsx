@@ -49,7 +49,7 @@ export default async function ShopPage() {
               className="group text-left w-full block"
               aria-label={`View details for ${product.name}`}
             >
-              <div className="aspect-square mb-4 overflow-hidden rounded-lg shadow-sm bg-gray-50 relative">
+              <div className="aspect-square mb-4 overflow-hidden shadow-sm bg-gray-50 relative">
                 {/* Use Next.js Image component for optimization */}
                 <Image
                   src={product.image}

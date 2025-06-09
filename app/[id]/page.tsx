@@ -58,7 +58,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Product Image */}
           <div className="h-fit top-8"> {/* Make image sticky on larger screens */}
-            <div className="bg-gray-50 rounded-lg overflow-hidden aspect-square relative shadow-sm">
+            <div className="bg-gray-50 overflow-hidden aspect-square relative shadow-sm">
               <Image
                 src={product.image}
                 alt={product.name}

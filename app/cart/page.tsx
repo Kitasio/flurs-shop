@@ -82,7 +82,7 @@ export default function CartPage() {
               {items.map((item) => (
                 <div key={`${item.product.id}-${item.size}`} className="flex items-start sm:items-center gap-4 py-4 border-b flex-col sm:flex-row">
                   <Link href={`/${item.product.id}`} className="flex-shrink-0">
-                    <div className="w-24 h-24 bg-gray-100 rounded overflow-hidden relative">
+                    <div className="w-24 h-24 bg-gray-100 overflow-hidden relative">
                       <Image
                         src={item.product.image}
                         alt={item.product.name}
@@ -107,7 +107,7 @@ export default function CartPage() {
                     <button
                       type="button" // Prevent form submission
                       onClick={() => updateQuantity(item.product.id, item.size, Math.max(1, item.quantity - 1))}
-                      className="p-1.5 hover:bg-gray-100 rounded disabled:opacity-50"
+                      className="p-1.5 hover:bg-gray-100 disabled:opacity-50"
                       disabled={item.quantity <= 1}
                       aria-label="Decrease quantity"
                     >
@@ -117,7 +117,7 @@ export default function CartPage() {
                     <button
                       type="button" // Prevent form submission
                       onClick={() => updateQuantity(item.product.id, item.size, item.quantity + 1)}
-                      className="p-1.5 hover:bg-gray-100 rounded"
+                      className="p-1.5 hover:bg-gray-100"
                       aria-label="Increase quantity"
                     >
                       <Plus size={16} />
@@ -132,7 +132,7 @@ export default function CartPage() {
                   <button
                     type="button" // Prevent form submission
                     onClick={() => removeFromCart(item.product.id, item.size)}
-                    className="p-2 hover:bg-gray-100 rounded text-gray-500 hover:text-red-600"
+                    className="p-2 hover:bg-gray-100 text-gray-500 hover:text-red-600"
                     aria-label="Remove item"
                   >
                     <X size={20} />
@@ -165,7 +165,7 @@ export default function CartPage() {
                     value={selectedCountry}
                     onChange={(e) => setSelectedCountry(e.target.value)}
                     required
-                    className="w-full p-2 border border-gray-300 rounded bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                    className="w-full p-2 border border-gray-300 bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                   >
                     <option value="" disabled>Select Country...</option>
                     {supportedCountries.map(code => (
@@ -234,7 +234,7 @@ function InputField({ label, type, name, required = false }: { label: string, ty
         id={name}
         name={name}
         required={required}
-        className="w-full p-2 border border-gray-300 rounded bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+        className="w-full p-2 border border-gray-300 bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
       />
     </div>
   );
@@ -249,7 +249,7 @@ function CheckoutButton({ disabled: externalDisabled = false }: { disabled?: boo
     <button
       type="submit"
       disabled={isDisabled} // Use combined disabled state
-      className="w-full bg-gray-900 text-white py-3 px-6 rounded hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+      className="w-full bg-gray-900 text-white py-3 px-6 hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
       aria-disabled={isDisabled}
     >
       {pending ? (

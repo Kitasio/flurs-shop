@@ -14,7 +14,7 @@ export default function CartIcon() {
   return (
     <Link
       href="/cart"
-      className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+      className="relative p-2 hover:bg-gray-100 transition-colors"
       aria-label={`Shopping cart with ${displayCount} items`}
     >
       <ShoppingCart size={24} className="text-gray-800" />

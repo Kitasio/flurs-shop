@@ -9,7 +9,7 @@ interface HeaderProps {
 // This is a Server Component by default
 export default function Header({ showBackButton = false, backHref = '/' }: HeaderProps) {
   return (
-    <header className="p-4 sm:p-6 flex items-center border-b border-gray-200">
+    <header className="p-4 sm:p-6 flex items-center">
       <div className="flex-1 flex justify-start">
         {showBackButton && (
           <Link
@@ -24,7 +24,7 @@ export default function Header({ showBackButton = false, backHref = '/' }: Heade
       </div>
       <div className="flex-1 flex justify-center">
         <Link href="/" className="text-3xl sm:text-4xl font-serif italic text-gray-800">
-          Flurs
+          <img src="/logo.png" alt="Flurs Logo" className="h-12 sm:h-14" />
         </Link>
       </div>
       <div className="flex-1 flex justify-end">

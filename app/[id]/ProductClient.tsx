@@ -100,7 +100,7 @@ export default function ProductClient({ product }: ProductClientProps) {
               setShowSuccessMessage(false);
             }}
             required
-            className={`w-full p-3 border rounded bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedSize ? 'border-red-500' : 'border-gray-300'}`}
+            className={`w-full p-3 border bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedSize ? 'border-red-500' : 'border-gray-300'}`}
             aria-describedby={errorMessage && !selectedSize ? "size-error" : undefined}
           >
             <option value="" disabled>SELECT SIZE</option>
@@ -124,7 +124,7 @@ export default function ProductClient({ product }: ProductClientProps) {
             min="1"
             value={quantity}
             onChange={(e) => setQuantity(Math.max(1, Number.parseInt(e.target.value, 10) || 1))}
-            className="w-32 p-3 border border-gray-300 rounded bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+            className="w-32 p-3 border border-gray-300 bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
           />
         </div>
 
@@ -132,7 +132,7 @@ export default function ProductClient({ product }: ProductClientProps) {
         <button
           type="button"
           onClick={handleAddToCart}
-          className="w-full bg-gray-900 text-white py-3 px-6 rounded hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+          className="w-full bg-gray-900 text-white py-3 px-6 hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
         >
           ADD TO CART
         </button>

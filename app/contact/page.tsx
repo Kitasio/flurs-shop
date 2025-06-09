@@ -9,7 +9,7 @@ export default function ContactPage() {
 
       <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
         <h2 className="text-2xl font-serif mb-6">Contact Me</h2>
-        <div className="space-y-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
+        <div className="space-y-6 bg-gray-50 p-6 border border-gray-200">
           <div>
             <h3 className="text-sm font-medium text-gray-800 mb-1">Email</h3>
             <a href="mailto:lidiakurshuk@gmail.com" className="text-gray-600 hover:text-gray-900 break-all">
