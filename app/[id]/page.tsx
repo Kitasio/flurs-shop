@@ -55,9 +55,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Product Details Layout */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           {/* Left Column - Product Image */}
-          <div className="h-fit top-8"> {/* Make image sticky on larger screens */}
+          <div className="h-fit top-8 lg:col-span-3"> {/* Make image sticky on larger screens */}
             <div className="bg-gray-50 overflow-hidden aspect-square relative shadow-sm">
               <Image
                 src={product.image}
@@ -72,7 +72,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           {/* Right Column - Product Info (Pass data to Client Component) */}
           {/* ProductClient handles size, quantity, and add to cart */}
-          <ProductClient product={product} />
+          <div className="lg:col-span-1">
+            <ProductClient product={product} />
+          </div>
 
         </div>
       </div>
