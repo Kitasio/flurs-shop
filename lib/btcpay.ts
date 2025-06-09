@@ -62,9 +62,9 @@ function transformBTCPayProduct(item: BTCPayProduct, currency: string): Product 
   // Default sizes if not specified in description
   // TODO: Consider making sizes configurable or deriving from description/metadata
   const sizes = [
-    { name: 'A4', dimensions: '210 x 297mm' },
     { name: 'A3', dimensions: '297 x 420mm' },
-    { name: 'A2', dimensions: '420 x 594mm' }
+    { name: 'B2', dimensions: '500 x 707mm' },
+    { name: 'B1', dimensions: '707 x 1000mm' }
   ];
 
   return {
