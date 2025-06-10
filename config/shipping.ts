@@ -95,7 +95,7 @@ const shippingConfig: Record<string, CountryShippingInfo> = {
   CL: { name: 'Chile', rate: defaultShippingRate },
   CN: { name: 'China', rate: defaultShippingRate },
   CO: { name: 'Colombia', rate: defaultShippingRate },
-  CR: { name: 'Costa Rica', rate: defaultShippingRate }
+  CR: { name: 'Costa Rica', rate: defaultShippingRate },
   EC: { name: 'Ecuador', rate: defaultShippingRate },
   SV: { name: 'El Salvador', rate: defaultShippingRate },
   GQ: { name: 'Equatorial Guinea', rate: defaultShippingRate },
