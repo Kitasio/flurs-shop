@@ -3,12 +3,16 @@ import Image from 'next/image';
 import { fetchProducts } from '../lib/btcpay';
 import type { Product } from '../types/btcpay';
 import Header from '@/components/Header';
+import { listAllPosters } from '@/lib/pb';
 
 // This is a React Server Component (RSC)
-export default async function ShopPage() {
+export default async function ShopPage () {
   let products: Product[] = [];
   let currency = '';
   let error: string | null = null;
+
+  const posters = await listAllPosters();
+  console.log('posters', posters);
 
   try {
     const data = await fetchProducts();
