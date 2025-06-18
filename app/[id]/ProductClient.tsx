@@ -10,6 +10,7 @@ interface ProductClientProps {
 
 export default function ProductClient ({ poster }: ProductClientProps) {
   const [selectedFormat, setSelectedFormat] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,6 +29,12 @@ export default function ProductClient ({ poster }: ProductClientProps) {
 
     if (!selectedFormat) {
       setErrorMessage('Please select a format.');
+      return;
+    }
+
+    // Require color selection if poster has colors
+    if (poster.colors && poster.colors.length > 0 && !selectedColor) {
+      setErrorMessage('Please select a color.');
       return;
     }
     if (quantity < 1) {
@@ -116,6 +123,37 @@ export default function ProductClient ({ poster }: ProductClientProps) {
             <p id="format-error" className="text-red-600 text-sm mt-1">{errorMessage}</p>
           )}
         </div>
+
+        {/* Color Selector (only if poster has colors) */}
+        {poster.colors && poster.colors.length > 0 && (
+          <div>
+            <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-2">
+              COLOR: *
+            </label>
+            <select
+              id="color"
+              value={selectedColor}
+              onChange={(e) => {
+                setSelectedColor(e.target.value);
+                setErrorMessage('');
+                setShowSuccessMessage(false);
+              }}
+              required
+              className={`w-full p-3 border bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedColor ? 'border-red-500' : 'border-gray-300'}`}
+              aria-describedby={errorMessage && !selectedColor ? "color-error" : undefined}
+            >
+              <option value="" disabled>SELECT COLOR</option>
+              {poster.colors.map(color => (
+                <option key={color} value={color}>
+                  {color}
+                </option>
+              ))}
+            </select>
+            {errorMessage && !selectedColor && (
+              <p id="color-error" className="text-red-600 text-sm mt-1">{errorMessage}</p>
+            )}
+          </div>
+        )}
 
         {/* Quantity Selector */}
         <div>
