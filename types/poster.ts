@@ -12,6 +12,7 @@ export interface Poster {
   hidden: boolean;
   id: string;
   images: { data: string[] };
+  colors: string[];
   inventory: number;
   name: string;
   updated: string;
