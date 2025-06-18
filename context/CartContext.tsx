@@ -6,7 +6,7 @@ import type { Product, CartItem } from '../types/btcpay';
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product, quantity: number, size: string) => void;
+  addToCart: (product: Product, quantity: number, size: string, color?: string) => void;
   removeFromCart: (productId: string, size: string) => void;
   updateQuantity: (productId: string, size: string, quantity: number) => void;
   clearCart: () => void;
@@ -49,10 +49,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, isCartReady]);
 
-  const addToCart = useCallback((product: Product, quantity: number, size: string) => {
+  const addToCart = useCallback((product: Product, quantity: number, size: string, color?: string) => {
     setItems(prevItems => {
       const existingItemIndex = prevItems.findIndex(
-        item => item.product.id === product.id && item.size === size
+        item => item.product.id === product.id && item.size === size && item.color === color
       );
 
       if (existingItemIndex > -1) {
@@ -65,7 +65,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return updatedItems;
       }
       // Add new item - the calculatedPrice is already set in the product.price
-      return [...prevItems, { product, quantity, size, calculatedPrice: product.price }];
+      return [...prevItems, { product, quantity, size, color, calculatedPrice: product.price }];
     });
   }, []);
 

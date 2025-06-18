@@ -61,7 +61,7 @@ export default function ProductClient ({ poster }: ProductClientProps) {
         sizes: poster.formats.data.map(f => ({ name: f.name, dimensions: f.name }))
       };
 
-      addToCart(productForCart, quantity, selectedFormat);
+      addToCart(productForCart, quantity, selectedFormat, selectedColor);
       setShowSuccessMessage(true);
       setTimeout(() => setShowSuccessMessage(false), 3000);
     } catch (error) {

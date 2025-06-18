@@ -39,6 +39,7 @@ export interface CartItem {
   product: Product; // Contains the BASE price (A4)
   quantity: number;
   size: string;
+  color?: string;
   calculatedPrice: number; // Price adjusted for the selected size
 }
 

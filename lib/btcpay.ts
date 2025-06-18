@@ -21,7 +21,7 @@ if (!API_URL || !API_KEY || !POS_ID || !STORE_ID) {
   throw new Error("Missing BTCPay Server environment variables");
 }
 
-export async function fetchProducts(): Promise<{ products: Product[], currency: string }> {
+export async function fetchProducts (): Promise<{ products: Product[], currency: string }> {
   try {
     const response = await fetch(
       `${API_URL}/api/v1/apps/pos/${POS_ID}`,
@@ -52,7 +52,7 @@ export async function fetchProducts(): Promise<{ products: Product[], currency: 
   }
 }
 
-function transformBTCPayProduct(item: BTCPayProduct, currency: string): Product {
+function transformBTCPayProduct (item: BTCPayProduct, currency: string): Product {
   // Split description into details
   const details = item.description
     .split('\n')
@@ -81,7 +81,7 @@ function transformBTCPayProduct(item: BTCPayProduct, currency: string): Product 
 }
 
 
-export async function createInvoice(
+export async function createInvoice (
   items: CartItem[],
   shippingInfo: ShippingInfo,
   shippingCost: number // Add shippingCost parameter
@@ -125,6 +125,12 @@ export async function createInvoice(
   const btcPayCartItems: BTCPayCartItem[] = validatedItems.map(item => {
     // Note: item.product is now the authoritative product data
     // item.calculatedPrice is the server-calculated price per unit
+    // Build title with size and color
+    let title = `${item.product.name} (${item.size})`;
+    if (item.color) {
+      title += ` - ${item.color}`;
+    }
+
     return {
       id: item.product.id,
       count: item.quantity,
@@ -135,7 +141,7 @@ export async function createInvoice(
         formatted: `${item.calculatedPrice.toFixed(2)} ${currency}` // Format the server price
       },
       // Use authoritative name and client-provided size
-      title: `${item.product.name} (${item.size})`,
+      title: title,
       inventory: null, // Assuming inventory is not tracked strictly here
       size: item.size // Keep size info if needed for posData or metadata
     };

@@ -97,6 +97,7 @@ export default function CartPage () {
                       <h3 className="font-serif text-lg truncate" title={item.product.name}>{item.product.name}</h3>
                     </Link>
                     <p className="text-sm text-gray-600">Size: {item.size}</p>
+                    {item.color && <p className="text-sm text-gray-600">Color: {item.color}</p>}
                     <p className="text-sm text-gray-800 sm:hidden mt-1"> {/* Price on mobile */}
                       {/* Display calculated price per item */}
                       {item.calculatedPrice.toLocaleString(undefined, { style: 'currency', currency: item.product.currency, minimumFractionDigits: 2 })} each
