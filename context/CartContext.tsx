@@ -1,21 +1,19 @@
-"use client"; // This hook and provider must run client-side
+"use client";
 
 import type React from 'react';
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { Product, CartItem } from '../types/btcpay';
-// Import the price calculation helper
-import { calculatePrice } from '../lib/pricing'; // <-- Updated import path
 
 interface CartContextType {
   items: CartItem[];
   addToCart: (product: Product, quantity: number, size: string) => void;
-  removeFromCart: (productId: string, size: string) => void; // Identify item by product ID and size
-  updateQuantity: (productId: string, size: string, quantity: number) => void; // Identify item by product ID and size
+  removeFromCart: (productId: string, size: string) => void;
+  updateQuantity: (productId: string, size: string, quantity: number) => void;
   clearCart: () => void;
   total: number;
   itemCount: number;
-  currency: string | null; // Add currency to the context
-  isCartReady: boolean; // Flag to indicate if cart has been loaded from storage
+  currency: string | null;
+  isCartReady: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -24,7 +22,7 @@ const CART_STORAGE_KEY = 'flurs_cart';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
-  const [isCartReady, setIsCartReady] = useState(false); // Initialize as not ready
+  const [isCartReady, setIsCartReady] = useState(false);
 
   // Load cart from localStorage on initial mount
   useEffect(() => {
@@ -35,16 +33,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (error) {
       console.error("Failed to load cart from localStorage:", error);
-      // Handle potential errors (e.g., corrupted data, storage unavailable)
     } finally {
-      setIsCartReady(true); // Mark cart as ready after attempting load
+      setIsCartReady(true);
     }
   }, []);
 
   // Save cart to localStorage whenever items change
   useEffect(() => {
-    // Only save if the cart is ready (i.e., initial load is complete)
-    // This prevents overwriting the stored cart with an empty initial state
     if (isCartReady) {
       try {
         localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
@@ -67,12 +62,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           ...updatedItems[existingItemIndex],
           quantity: updatedItems[existingItemIndex].quantity + quantity,
         };
-        // Price doesn't change when only quantity is updated for an existing item/size combo
         return updatedItems;
       }
-      // Add new item with calculated price
-      const calculatedPrice = calculatePrice(product.price, size);
-      return [...prevItems, { product, quantity, size, calculatedPrice }];
+      // Add new item - the calculatedPrice is already set in the product.price
+      return [...prevItems, { product, quantity, size, calculatedPrice: product.price }];
     });
   }, []);
 
@@ -86,9 +79,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems(prevItems =>
       prevItems.map(item =>
         item.product.id === productId && item.size === size
-          ? { ...item, quantity: Math.max(0, quantity) } // Ensure quantity doesn't go below 0
+          ? { ...item, quantity: Math.max(0, quantity) }
           : item
-      ).filter(item => item.quantity > 0) // Remove item if quantity becomes 0
+      ).filter(item => item.quantity > 0)
     );
   }, []);
 
@@ -101,8 +94,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-
-  // Calculate total based on the calculated price for each item's size
+  // Calculate total based on the calculated price for each item
   const total = items.reduce(
     (sum, item) => sum + item.calculatedPrice * item.quantity,
     0
@@ -123,7 +115,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart,
         total,
         itemCount,
-        currency, // Provide currency in context
+        currency,
         isCartReady
       }}
     >

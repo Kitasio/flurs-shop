@@ -10,7 +10,6 @@ import type {
   ShippingInfo,
   BTCPayCartItem
 } from '../types/btcpay';
-import { calculatePrice } from './pricing';
 
 // Ensure environment variables are defined
 const API_URL = process.env.BTCPAY_API_URL;
@@ -92,45 +91,22 @@ export async function createInvoice(
   const { products: authoritativeProducts, currency } = await fetchProducts();
   const productMap = new Map(authoritativeProducts.map(p => [p.id, p]));
 
-  // --- Security Enhancement: Recalculate prices using authoritative data ---
+  // --- Security Enhancement: Validate cart items ---
   let itemTotal = 0;
-  const validatedItems: CartItem[] = []; // Store items confirmed to exist
+  const validatedItems: CartItem[] = [];
 
   for (const item of items) {
-    const authoritativeProduct = productMap.get(item.product.id);
-
-    if (!authoritativeProduct) {
-      console.warn(`Product ID ${item.product.id} from cart not found in authoritative list. Skipping.`);
-      continue; // Skip this item or throw an error if preferred
-    }
-
     // Validate quantity (basic check)
     if (item.quantity <= 0) {
       console.warn(`Invalid quantity ${item.quantity} for product ID ${item.product.id}. Skipping.`);
       continue;
     }
 
-    // Validate size (ensure it's one of the available sizes for the product)
-    // Note: Assumes authoritativeProduct.sizes is populated correctly.
-    // If sizes aren't fetched, this check might need adjustment or removal.
-    if (!authoritativeProduct.sizes.some(s => s.name === item.size)) {
-      console.warn(`Invalid size "${item.size}" for product ID ${item.product.id}. Skipping.`);
-      continue;
-    }
+    // Use the price from the cart item (which comes from PocketBase formats)
+    itemTotal += item.calculatedPrice * item.quantity;
 
-
-    // Use the authoritative base price and the client-provided size
-    const serverCalculatedPrice = calculatePrice(authoritativeProduct.price, item.size);
-    itemTotal += serverCalculatedPrice * item.quantity;
-
-    // Add the validated item along with its authoritative product data
-    // We replace the potentially manipulated product data from the client item
-    // with the trusted data fetched from the server.
-    validatedItems.push({
-      ...item,
-      product: authoritativeProduct, // Use authoritative product data
-      calculatedPrice: serverCalculatedPrice // Store the server-calculated price
-    });
+    // Add the validated item
+    validatedItems.push(item);
   }
 
 

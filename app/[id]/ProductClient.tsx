@@ -1,39 +1,33 @@
-"use client"; // This component needs client-side hooks (useState, useCart)
+"use client";
 
-import { useState, useMemo } from 'react'; // Import useMemo
+import { useState, useMemo } from 'react';
 import { useCart } from '../../context/CartContext';
-import type { Product } from '../../types/btcpay';
-// Import the price calculation helper
-import { calculatePrice } from '../../lib/pricing'; // <-- Updated import path
+import type { Poster } from '../../types/poster';
 
 interface ProductClientProps {
-  product: Product;
+  poster: Poster;
 }
 
-export default function ProductClient({ product }: ProductClientProps) {
-  const [selectedSize, setSelectedSize] = useState('');
+export default function ProductClient ({ poster }: ProductClientProps) {
+  const [selectedFormat, setSelectedFormat] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const { addToCart } = useCart();
 
-  // Calculate displayed price based on selected size
+  // Calculate displayed price based on selected format
   const displayedPrice = useMemo(() => {
-    // Calculate the price for a single item based on size
-    const singleItemPrice = selectedSize
-      ? calculatePrice(product.price, selectedSize)
-      : product.price; // Use base price if no size selected or size is base
-
-    // Multiply by quantity
+    const selectedFormatData = poster.formats.data.find(f => f.name === selectedFormat);
+    const singleItemPrice = selectedFormatData ? selectedFormatData.price : poster.formats.data[0]?.price || 0;
     return singleItemPrice * quantity;
-  }, [product.price, selectedSize, quantity]); // Add quantity to dependency array
+  }, [poster.formats.data, selectedFormat, quantity]);
 
   const handleAddToCart = () => {
-    setErrorMessage(''); // Clear previous error
-    setShowSuccessMessage(false); // Hide previous success message
+    setErrorMessage('');
+    setShowSuccessMessage(false);
 
-    if (!selectedSize) {
-      setErrorMessage('Please select a size.');
+    if (!selectedFormat) {
+      setErrorMessage('Please select a format.');
       return;
     }
     if (quantity < 1) {
@@ -41,13 +35,27 @@ export default function ProductClient({ product }: ProductClientProps) {
       return;
     }
 
+    const selectedFormatData = poster.formats.data.find(f => f.name === selectedFormat);
+    if (!selectedFormatData) {
+      setErrorMessage('Selected format is not available.');
+      return;
+    }
+
     try {
-      addToCart(product, quantity, selectedSize);
-      // Optionally reset form or show success message
-      // setSelectedSize(''); // Keep size selected?
-      // setQuantity(1); // Reset quantity?
+      // Convert poster to product format for cart compatibility
+      const productForCart = {
+        id: poster.id,
+        name: poster.name,
+        price: selectedFormatData.price,
+        currency: 'USD', // You might want to make this configurable
+        image: poster.images.data[0],
+        description: poster.description,
+        details: [],
+        sizes: poster.formats.data.map(f => ({ name: f.name, dimensions: f.name }))
+      };
+
+      addToCart(productForCart, quantity, selectedFormat);
       setShowSuccessMessage(true);
-      // Hide success message after a few seconds
       setTimeout(() => setShowSuccessMessage(false), 3000);
     } catch (error) {
       console.error("Failed to add to cart:", error);
@@ -57,59 +65,55 @@ export default function ProductClient({ product }: ProductClientProps) {
 
   return (
     <div className="flex flex-col">
-      <h2 className="text-2xl font-serif mb-2">{product.name}</h2>
+      <h2 className="text-2xl font-serif mb-2">{poster.name}</h2>
+
       {/* Display dynamic price */}
       <p className="text-lg text-gray-700 mb-6">
-        {displayedPrice.toLocaleString(undefined, { style: 'currency', currency: product.currency, minimumFractionDigits: 2 })}
-        {selectedSize && selectedSize !== 'A4' && <span className="text-sm text-gray-500 ml-2">(Size: {selectedSize})</span>}
+        ${displayedPrice.toFixed(2)}
+        {selectedFormat && <span className="text-sm text-gray-500 ml-2">(Format: {selectedFormat})</span>}
       </p>
 
-      {/* Short Description */}
-      <p className="text-gray-600 mb-6">{product.description}</p>
+      {/* Description */}
+      <p dangerouslySetInnerHTML={{ __html: poster.description }} className="text-gray-600 mb-6"></p>
 
-      {/* First Detail Line (if exists) */}
-      {product.details[0] && (
-        <p className="text-gray-600 mb-6 whitespace-pre-wrap">
-          {product.details[0]}
-        </p>
-      )}
-
-      {/* Available Sizes Info */}
+      {/* Available Formats Info */}
       <div className="mb-8">
-        <h3 className="text-sm font-medium mb-2">Available in the following sizes:</h3>
-        {product.sizes.map(size => (
-          <p key={size.name} className="text-gray-600 text-sm">
-            {size.name} - {size.dimensions}
+        <h3 className="text-sm font-medium mb-2">Available formats:</h3>
+        {poster.formats.data.map(format => (
+          <p key={format.name} className="text-gray-600 text-sm">
+            {format.name} - ${format.price.toFixed(2)}
           </p>
         ))}
       </div>
 
       {/* Interactive Section */}
       <div className="space-y-6">
-        {/* Size Selector */}
+        {/* Format Selector */}
         <div>
-          <label htmlFor="size" className="block text-sm font-medium text-gray-700 mb-2">
-            SIZE: *
+          <label htmlFor="format" className="block text-sm font-medium text-gray-700 mb-2">
+            FORMAT: *
           </label>
           <select
-            id="size"
-            value={selectedSize}
+            id="format"
+            value={selectedFormat}
             onChange={(e) => {
-              setSelectedSize(e.target.value);
-              setErrorMessage(''); // Clear error when size changes
+              setSelectedFormat(e.target.value);
+              setErrorMessage('');
               setShowSuccessMessage(false);
             }}
             required
-            className={`w-full p-3 border bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedSize ? 'border-red-500' : 'border-gray-300'}`}
-            aria-describedby={errorMessage && !selectedSize ? "size-error" : undefined}
+            className={`w-full p-3 border bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedFormat ? 'border-red-500' : 'border-gray-300'}`}
+            aria-describedby={errorMessage && !selectedFormat ? "format-error" : undefined}
           >
-            <option value="" disabled>SELECT SIZE</option>
-            {product.sizes.map(size => (
-              <option key={size.name} value={size.name}>{size.name}</option>
+            <option value="" disabled>SELECT FORMAT</option>
+            {poster.formats.data.map(format => (
+              <option key={format.name} value={format.name}>
+                {format.name} - ${format.price.toFixed(2)}
+              </option>
             ))}
           </select>
-          {errorMessage && !selectedSize && (
-            <p id="size-error" className="text-red-600 text-sm mt-1">{errorMessage}</p>
+          {errorMessage && !selectedFormat && (
+            <p id="format-error" className="text-red-600 text-sm mt-1">{errorMessage}</p>
           )}
         </div>
 
@@ -122,10 +126,14 @@ export default function ProductClient({ product }: ProductClientProps) {
             type="number"
             id="quantity"
             min="1"
+            max={poster.inventory || undefined}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(1, Number.parseInt(e.target.value, 10) || 1))}
             className="w-32 p-3 border border-gray-300 bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
           />
+          {poster.inventory && (
+            <p className="text-sm text-gray-500 mt-1">{poster.inventory} in stock</p>
+          )}
         </div>
 
         {/* Add to Cart Button */}
@@ -141,17 +149,10 @@ export default function ProductClient({ product }: ProductClientProps) {
         {showSuccessMessage && (
           <p className="text-green-600 text-sm mt-2 text-center">Item added to cart!</p>
         )}
-        {/* General Error Message (e.g., from addToCart failure) */}
-        {errorMessage && selectedSize && (
+        {/* General Error Message */}
+        {errorMessage && selectedFormat && (
           <p className="text-red-600 text-sm mt-2 text-center">{errorMessage}</p>
         )}
-      </div>
-
-      {/* Remaining Details */}
-      <div className="mt-8 text-sm text-gray-500 space-y-2">
-        {product.details.slice(1).map((detail, index) => (
-          <p key={`detail-${index}-${detail}`}>{detail}</p>
-        ))}
       </div>
     </div>
   );

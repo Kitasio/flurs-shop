@@ -18,7 +18,7 @@ const initialCheckoutState = {
   success: false,
 };
 
-export default function CartPage() {
+export default function CartPage () {
   const { items, removeFromCart, updateQuantity, total: itemTotal, itemCount, currency, isCartReady } = useCart(); // Rename total to itemTotal
   const router = useRouter(); // Get router instance
   // useFormState hook to manage form submission state with Server Actions
@@ -223,7 +223,7 @@ export default function CartPage() {
 }
 
 // Helper component for input fields
-function InputField({ label, type, name, required = false }: { label: string, type: string, name: string, required?: boolean }) {
+function InputField ({ label, type, name, required = false }: { label: string, type: string, name: string, required?: boolean }) {
   return (
     <div>
       <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
@@ -241,7 +241,7 @@ function InputField({ label, type, name, required = false }: { label: string, ty
 }
 
 // Update CheckoutButton to accept a disabled prop
-function CheckoutButton({ disabled: externalDisabled = false }: { disabled?: boolean }) {
+function CheckoutButton ({ disabled: externalDisabled = false }: { disabled?: boolean }) {
   const { pending } = useFormStatus();
   const isDisabled = pending || externalDisabled; // Combine pending state with external disabled prop
 

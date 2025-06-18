@@ -21,3 +21,13 @@ export async function listAllPosters (): Promise<Poster[]> {
   const records = await pb.collection('posters').getFullList<Poster>();
   return records;
 }
+
+export async function getPosterById (id: string): Promise<Poster | null> {
+  try {
+    const record = await pb.collection('posters').getOne<Poster>(id);
+    return record;
+  } catch (error) {
+    console.error('Error fetching poster:', error);
+    return null;
+  }
+}
