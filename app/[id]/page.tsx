@@ -4,6 +4,7 @@ import { getPosterById } from '../../lib/pb';
 import type { Poster } from '../../types/poster';
 import Header from '../../components/Header';
 import ProductClient from './ProductClient';
+import ImageGallery from './ImageGallery';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -51,18 +52,7 @@ export default async function ProductPage ({ params }: ProductPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           {/* Left Column - Product Images */}
           <div className="h-fit top-8 lg:col-span-3">
-            <div className="space-y-4">
-              {poster.images.data.map((image, index) => (
-                <div key={index} className="bg-gray-50 overflow-hidden aspect-square relative shadow-sm">
-                  <img
-                    src={image}
-                    alt={`${poster.name} - Image ${index + 1}`}
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-contain"
-                  />
-                </div>
-              ))}
-            </div>
+            <ImageGallery images={poster.images.data} productName={poster.name} />
           </div>
 
           {/* Right Column - Product Info */}
