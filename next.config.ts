@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       new URL('https://btcpay.flurs.art/**'),
       new URL('https://flurs-shop.fly.storage.tigris.dev/**'),
+      new URL('https://flurs.fly.storage.tigris.dev/**'),
     ],
   },
 };

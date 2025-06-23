@@ -54,13 +54,11 @@ export default async function ProductPage ({ params }: ProductPageProps) {
             <div className="space-y-4">
               {poster.images.data.map((image, index) => (
                 <div key={index} className="bg-gray-50 overflow-hidden aspect-square relative shadow-sm">
-                  <Image
+                  <img
                     src={image}
                     alt={`${poster.name} - Image ${index + 1}`}
-                    fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-contain"
-                    priority={index === 0}
                   />
                 </div>
               ))}
