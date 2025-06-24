@@ -49,7 +49,7 @@ export default async function ProductPage ({ params }: ProductPageProps) {
       <Header showBackButton={true} />
 
       {/* Product Details Layout */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           {/* Left Column - Product Images */}
           <div className="h-fit top-8 lg:col-span-3">
