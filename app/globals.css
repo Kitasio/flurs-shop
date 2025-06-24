@@ -3,3 +3,117 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Handprint navigation buttons */
+.handprint-button {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 50%, #000000 100%);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 50% 40% 60% 30% / 40% 60% 30% 50%;
+  box-shadow: 
+    inset -5px -5px 15px rgba(0,0,0,0.3),
+    inset 5px 5px 15px rgba(255,255,255,0.1),
+    0 8px 20px rgba(0,0,0,0.3);
+}
+
+.handprint-button::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  width: 25px;
+  height: 40px;
+  background: inherit;
+  border-radius: 50%;
+  transform: rotate(-20deg);
+  box-shadow: inherit;
+}
+
+.handprint-button::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 25px;
+  width: 20px;
+  height: 35px;
+  background: inherit;
+  border-radius: 50%;
+  transform: rotate(15deg);
+  box-shadow: inherit;
+}
+
+.handprint-text {
+  position: relative;
+  z-index: 10;
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: center;
+  display: block;
+  margin-top: 50px;
+}
+
+.contact-hand .handprint-text {
+  font-style: italic;
+  font-weight: 300;
+}
+
+.about-hand .handprint-text {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.portfolio-hand .handprint-text {
+  font-style: italic;
+  font-weight: 300;
+}
+
+.archive-hand .handprint-text {
+  font-weight: 400;
+}
+
+.handprint-button:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    inset -5px -5px 15px rgba(0,0,0,0.4),
+    inset 5px 5px 15px rgba(255,255,255,0.15),
+    0 12px 25px rgba(0,0,0,0.4);
+}
+
+.contact-hand {
+  transform: rotate(-8deg);
+}
+
+.about-hand {
+  transform: rotate(5deg);
+}
+
+.portfolio-hand {
+  transform: rotate(-12deg);
+}
+
+.archive-hand {
+  transform: rotate(7deg);
+}
+
+.contact-hand:hover {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+.about-hand:hover {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.portfolio-hand:hover {
+  transform: rotate(-12deg) scale(1.05);
+}
+
+.archive-hand:hover {
+  transform: rotate(7deg) scale(1.05);
+}

@@ -192,6 +192,7 @@ export default function ProductClient ({ poster }: ProductClientProps) {
           <p className="text-red-600 text-sm mt-2 text-center">{errorMessage}</p>
         )}
       </div>
+
     </div>
   );
 }

@@ -5,6 +5,7 @@ import type { Poster } from '../../types/poster';
 import Header from '../../components/Header';
 import ProductClient from './ProductClient';
 import ImageGallery from './ImageGallery';
+import NavigationButtons from './NavigationButtons';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -62,6 +63,9 @@ export default async function ProductPage ({ params }: ProductPageProps) {
 
         </div>
       </div>
+
+      {/* Navigation Buttons - Handprint Style - Below entire product */}
+      <NavigationButtons />
     </>
   );
 }
