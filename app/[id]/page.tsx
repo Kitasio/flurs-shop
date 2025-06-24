@@ -66,6 +66,55 @@ export default async function ProductPage ({ params }: ProductPageProps) {
 
       {/* Navigation Buttons - Handprint Style - Below entire product */}
       <NavigationButtons />
+
+      {/* New Grid Layout */}
+  <div className="px-4 sm:px-6 lg:px-8 py-8 mt-16">
+  <div className="grid grid-cols-12 grid-rows-5 bg-gray-300 gap-1">
+    {/* Portfolio*/}
+    <div className="col-span-4 row-span-4 relative">
+      <Image
+        src="https://flurs.fly.storage.tigris.dev/web/portfolio.png"
+        alt="Portfolio"
+        fill
+        className="object-contain"
+      />
+    </div>
+       {/*About*/}
+<div className="col-start-5 col-span-3 row-start-3 row-span-2 relative"> 
+   <Image
+        src="https://flurs.fly.storage.tigris.dev/web/about.png"
+        alt="About"
+        fill
+        className='object-contain'
+      />
+    </div>
+           {/*Contact*/}
+<div className="col-start-7 col-span-6 row-start-1 row-span-2 relative"> 
+   <Image
+        src="https://flurs.fly.storage.tigris.dev/web/contact.png"
+        alt="Contact"
+        fill
+        className='object-contain'
+      />
+    </div>
+    {/*Archive*/}
+<div className="col-start-8 col-span-5 row-span-4 relative"> 
+   <Image
+        src="https://flurs.fly.storage.tigris.dev/web/archive.png"
+        alt="Archive"
+        fill
+        className='object-contain'
+      />
+    </div>
+  {/* Fill remaining grid cells */}
+    {Array.from({ length: 70 }).map((_, index) => (
+      <div
+        key={index}
+        className="h-40 bg-white border border-gray-400"
+      />
+    ))}
+  </div>
+</div>
     </>
   );
 }
