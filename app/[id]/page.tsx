@@ -66,64 +66,53 @@ export default async function ProductPage ({ params }: ProductPageProps) {
 
       {/* Navigation Buttons - Handprint Style - Below entire product */}
       <NavigationButtons />
+<div className="relative h-screen">
+      {/* ABOUT */}
+      <a
+        href="/about"
+        className="absolute top-[50px] left-[100px] w-[260px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/about.svg" alt="About" className="w-full h-auto" />
+      </a>
 
-      {/* New Grid Layout */}
-  <div className="px-4 sm:px-6 lg:px-8 py-8 mt-16">
-  <div className="grid grid-cols-12 grid-rows-9 2xl:bg-blue-400">
-    {/* Portfolio*/}
-    <div className="col-span-4 row-span-4 relative">
-      <Image
-        src="https://flurs.fly.storage.tigris.dev/web/portfolio_2.png"
-        alt="Portfolio"
-        fill
-        className="object-contain"
-      />
+      {/* PORTFOLIO */}
+      <a
+        href="/portfolio"
+        className="absolute top-[200px] left-[400px] w-[370px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/portfolio.svg" alt="Stockists" className="w-full h-auto" />
+      </a>
+
+      {/* ARCHIVE */}
+      <a
+        href="/archive"
+        className="absolute top-[320px] right-[100px] w-[550px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/archive.svg" alt="Archive" className="w-full h-auto" />
+      </a>
+
+      {/* CONTACT */}
+      <a
+        href="/contact"
+        className="absolute top-[0px] right-[100px] w-[600px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/contact.svg" alt="Contact" className="w-full h-auto" />
+      </a>
+            {/* Grass */}
+      <a
+        href="/grass"
+        className="absolute top-[550px] left-[100px] w-[600px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/Group 5.svg" alt="Archive" className="w-full h-auto" />
+      </a>
+            {/* Flower */}
+      <a
+        href="/flower"
+        className="absolute top-[20px] left-[400px] w-[200px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/flower.svg" alt="Archive" className="w-full h-auto" />
+      </a>
     </div>
-       {/*About*/}
-<div className="col-start-5 col-span-3 row-start-3 row-span-2 relative"> 
-   <Image
-        src="https://flurs.fly.storage.tigris.dev/web/about_2.png"
-        alt="About"
-        fill
-        className='object-contain'
-      />
-    </div>
-           {/*Contact*/}
-<div className="col-start-5 col-span-8 row-start-1 row-span-2 relative"> 
-   <Image
-        src="https://flurs.fly.storage.tigris.dev/web/contact_2.png"
-        alt="Contact"
-        fill
-        className='object-contain'
-      />
-    </div>
-    {/*Archive*/}
-<div className="col-start-8 col-span-5 row-span-4 relative"> 
-   <Image
-        src="https://flurs.fly.storage.tigris.dev/web/archive_2.png"
-        alt="Archive"
-        fill
-        className='object-contain'
-      />
-    </div>
-    {/*Grass*/}
-<div className="col-start-1 col-end-8 row-start-5 row-end-7 relative"> 
-   <Image
-        src="https://flurs.fly.storage.tigris.dev/web/Layer 17.png"
-        alt="grass"
-        fill
-        className='object-contain'
-      />
-    </div>
-  {/* Fill remaining grid cells */}
-    {Array.from({ length: 70 }).map((_, index) => (
-      <div
-        key={index}
-        className="h-40 bg-white border border-gray-400"
-      />
-    ))}
-  </div>
-</div>
     </>
   );
 }
