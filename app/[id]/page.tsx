@@ -69,11 +69,11 @@ export default async function ProductPage ({ params }: ProductPageProps) {
 
       {/* New Grid Layout */}
   <div className="px-4 sm:px-6 lg:px-8 py-8 mt-16">
-  <div className="grid grid-cols-12 grid-rows-5 bg-gray-300 gap-1">
+  <div className="grid grid-cols-12 grid-rows-9 2xl:bg-blue-400">
     {/* Portfolio*/}
     <div className="col-span-4 row-span-4 relative">
       <Image
-        src="https://flurs.fly.storage.tigris.dev/web/portfolio.png"
+        src="https://flurs.fly.storage.tigris.dev/web/portfolio_2.png"
         alt="Portfolio"
         fill
         className="object-contain"
@@ -82,16 +82,16 @@ export default async function ProductPage ({ params }: ProductPageProps) {
        {/*About*/}
 <div className="col-start-5 col-span-3 row-start-3 row-span-2 relative"> 
    <Image
-        src="https://flurs.fly.storage.tigris.dev/web/about.png"
+        src="https://flurs.fly.storage.tigris.dev/web/about_2.png"
         alt="About"
         fill
         className='object-contain'
       />
     </div>
            {/*Contact*/}
-<div className="col-start-7 col-span-6 row-start-1 row-span-2 relative"> 
+<div className="col-start-5 col-span-8 row-start-1 row-span-2 relative"> 
    <Image
-        src="https://flurs.fly.storage.tigris.dev/web/contact.png"
+        src="https://flurs.fly.storage.tigris.dev/web/contact_2.png"
         alt="Contact"
         fill
         className='object-contain'
@@ -100,8 +100,17 @@ export default async function ProductPage ({ params }: ProductPageProps) {
     {/*Archive*/}
 <div className="col-start-8 col-span-5 row-span-4 relative"> 
    <Image
-        src="https://flurs.fly.storage.tigris.dev/web/archive.png"
+        src="https://flurs.fly.storage.tigris.dev/web/archive_2.png"
         alt="Archive"
+        fill
+        className='object-contain'
+      />
+    </div>
+    {/*Grass*/}
+<div className="col-start-1 col-end-8 row-start-5 row-end-7 relative"> 
+   <Image
+        src="https://flurs.fly.storage.tigris.dev/web/Layer 17.png"
+        alt="grass"
         fill
         className='object-contain'
       />
