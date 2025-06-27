@@ -78,7 +78,7 @@ export default async function ProductPage ({ params }: ProductPageProps) {
       {/* PORTFOLIO */}
       <a
         href="/portfolio"
-        className="absolute top-[200px] left-[400px] w-[370px] hover:scale-105 transition-transform"
+        className="absolute top-[250px] left-[400px] w-[380px] hover:scale-105 transition-transform"
       >
         <img src="https://flurs.fly.storage.tigris.dev/web/portfolio.svg" alt="Stockists" className="w-full h-auto" />
       </a>
@@ -86,7 +86,7 @@ export default async function ProductPage ({ params }: ProductPageProps) {
       {/* ARCHIVE */}
       <a
         href="/archive"
-        className="absolute top-[320px] right-[100px] w-[550px] hover:scale-105 transition-transform"
+        className="absolute top-[330px] right-[100px] w-[550px] hover:scale-105 transition-transform"
       >
         <img src="https://flurs.fly.storage.tigris.dev/web/archive.svg" alt="Archive" className="w-full h-auto" />
       </a>
@@ -94,7 +94,7 @@ export default async function ProductPage ({ params }: ProductPageProps) {
       {/* CONTACT */}
       <a
         href="/contact"
-        className="absolute top-[0px] right-[100px] w-[600px] hover:scale-105 transition-transform"
+        className="absolute top-[50px] right-[100px] w-[600px] hover:scale-105 transition-transform"
       >
         <img src="https://flurs.fly.storage.tigris.dev/web/contact.svg" alt="Contact" className="w-full h-auto" />
       </a>
@@ -108,9 +108,37 @@ export default async function ProductPage ({ params }: ProductPageProps) {
             {/* Flower */}
       <a
         href="/flower"
-        className="absolute top-[20px] left-[400px] w-[200px] hover:scale-105 transition-transform"
+        className="absolute top-[60px] left-[390px] w-[200px] hover:scale-105 transition-transform"
       >
         <img src="https://flurs.fly.storage.tigris.dev/web/flower.svg" alt="Archive" className="w-full h-auto" />
+      </a>
+             {/* Flower2 */}
+      <a
+        href="/flower"
+        className="absolute top-[60px] left-[500px] w-[200px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/flower.svg" alt="Archive" className="w-full h-auto" />
+      </a>
+              {/* Flower3 */}
+      <a
+        href="/flower"
+        className="absolute top-[250px] right-[450px] w-[200px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/flowers.svg" alt="Archive" className="w-full h-auto" />
+      </a>
+               {/* Flower3 */}
+      <a
+        href="/flower"
+        className="absolute top-[250px] right-[100px] w-[200px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/flowers.svg" alt="Archive" className="w-full h-auto" />
+      </a>
+                {/* Flower3 */}
+      <a
+        href="/flower"
+        className="absolute top-[250px] right-[270px] w-[200px] hover:scale-105 transition-transform"
+      >
+        <img src="https://flurs.fly.storage.tigris.dev/web/flowers.svg" alt="Archive" className="w-full h-auto" />
       </a>
     </div>
     </>
