@@ -24,7 +24,7 @@ export default function Header({ showBackButton = false, backHref = '/' }: Heade
       </div>
       <div className="flex-1 flex justify-center">
         <Link href="/" className="text-3xl sm:text-4xl font-serif italic text-gray-800">
-          <img src="/logo.png" alt="Flurs Logo" className="h-12 sm:h-14" />
+          <img src="/logo.png" alt="Flurs Logo" className="h-12 sm:h-18" />
         </Link>
       </div>
       <div className="flex-1 flex justify-end">
