@@ -96,6 +96,20 @@ export default function NavigationButtons() {
           <img src="https://flurs.fly.storage.tigris.dev/web/about.svg" alt="About" className="w-full h-auto" />
         </a>
       </div>
+
+      {/* Footer */}
+      <footer className="w-full mt-8">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          </div>
+          {/* Bottom Bar */}
+          <div className="mt-6 pt-6 text-center">
+            <p className="text-xs text-gray-500">
+              © {new Date().getFullYear()} FLURS. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </>
   )
 }
