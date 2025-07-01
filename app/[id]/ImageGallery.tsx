@@ -22,7 +22,7 @@ export default function ImageGallery({ images, productName }: ImageGalleryProps)
     <>
       <div className="space-y-4">
         {/* Main Image */}
-        <div className="bg-gray-50 overflow-hidden aspect-square relative shadow-sm">
+        <div className="bg-gray-50 overflow-hidden aspect-square relative">
           <img
             src={images[selectedImageIndex]}
             alt={`${productName} - Main view`}
