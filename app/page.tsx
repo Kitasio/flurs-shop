@@ -46,14 +46,14 @@ export default async function ShopPage () {
               className="group text-left w-full block"
               aria-label={`View details for ${poster.name}`}
             >
-              <div className="aspect-square mb-4 overflow-hidden shadow-sm bg-gray-50 relative">
+              <div className="aspect-square mb-4 overflow-hidden bg-gray-50 relative">
                 {/* Use the first image from the images array */}
                 <Image
                   src={poster.images.data[0]}
                   alt={poster.name}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className="object-contain group-hover:scale-105 transition-transform duration-300"
+                  className="object-contain group-hover:scale-101 transition-transform duration-300"
                   priority={posters.indexOf(poster) < 4}
                 />
               </div>
