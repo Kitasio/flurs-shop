@@ -63,8 +63,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
-      {/* Navigation Buttons - Handprint Style - Below entire product */}
-      <NavigationButtons />
     </>
   );
 }
