@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import Image from 'next/image';
 
 export default function CartIcon() {
   const { itemCount, isCartReady } = useCart();
@@ -17,7 +17,7 @@ export default function CartIcon() {
       className="relative p-2 hover:bg-gray-100 transition-colors"
       aria-label={`Shopping cart with ${displayCount} items`}
     >
-      <ShoppingCart size={24} className="text-gray-800" />
+      <Image alt="cart-icon" width={32} height={32} src="https://flurs.fly.storage.tigris.dev/web/cart.svg" />
       {isCartReady && itemCount > 0 && (
         <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full pointer-events-none">
           {itemCount}
