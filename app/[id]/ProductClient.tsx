@@ -72,13 +72,16 @@ export default function ProductClient ({ poster }: ProductClientProps) {
 
   return (
     <div className="flex flex-col">
-      <h2 className="text-2xl font-serif mb-2">{poster.name}</h2>
+      <h2 className="text-4xl font-serif mb-2">{poster.name}</h2>
 
-      {/* Display dynamic price */}
-      <p className="text-lg text-gray-700 mb-6">
-        ${displayedPrice.toFixed(2)}
-        {selectedFormat && <span className="text-sm text-gray-500 ml-2">(Format: {selectedFormat})</span>}
-      </p>
+     <p className="text-lg text-gray-600 mb-6 italic">
+  from ${displayedPrice.toFixed(2)}
+  {selectedFormat && (
+    <span className="text-sm text-gray-500 ml-2">
+      (Format: {selectedFormat})
+    </span>
+  )}
+</p>
 
       {/* Description */}
       <p dangerouslySetInnerHTML={{ __html: poster.description }} className="text-gray-600 mb-6"></p>
