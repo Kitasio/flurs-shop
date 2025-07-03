@@ -23,8 +23,8 @@ export default function NavigationButtons() {
 
         {/* ARCHIVE */}
         <a
-         href="#"
-         className="absolute top-[30%] right-[5.21%] w-[38%] hover:scale-101 transition-transform"
+          href="#"
+          className="absolute top-[30%] right-[5.21%] w-[38%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/archive.svg" alt="Archive" className="w-full h-auto" />
         </a>
@@ -83,13 +83,13 @@ export default function NavigationButtons() {
       {/* Mobile navigation (visible on mobile) */}
       <div className="sm:hidden flex flex-col items-center space-y-6 p-4">
         {/* Row 1: About & Portfolio */}
-        <a href="/portfolio" className="w-2/3 hover:scale-105 transition-transform">
-          <img src="https://flurs.fly.storage.tigris.dev/web/portfolio.svg" alt="Stockists" className="w-full h-auto" />
+        <a href="#" className="w-2/3 hover:scale-105 transition-transform">
+          <img src="https://flurs.fly.storage.tigris.dev/web/coming_soon.svg" alt="Stockists" className="w-full h-auto" />
         </a>
         <a href="/contact" className="w-2/3 hover:scale-105 transition-transform">
           <img src="https://flurs.fly.storage.tigris.dev/web/contact.svg" alt="Contact" className="w-full h-auto" />
         </a>
-        <a href="/archive" className="w-2/3 hover:scale-105 transition-transform">
+        <a href="#" className="w-2/3 hover:scale-105 transition-transform">
           <img src="https://flurs.fly.storage.tigris.dev/web/archive.svg" alt="Archive" className="w-full h-auto" />
         </a>
         <a href="/about" className="w-2/3 hover:scale-105 transition-transform">
