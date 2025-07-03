@@ -8,18 +8,16 @@ export default function AboutPage() {
         <h1 className="text-4xl font-serif mb-8">About</h1>
         <div className="prose prose-lg max-w-none">
           <p className="text-gray-600 leading-relaxed mb-6">
-            Welcome to our creative space where art meets functionality. We specialize in creating 
-            unique posters and prints that transform any space into a gallery of inspiration.
+            Hi, I'm Lydia Kurshuk, an artist, illustrator, and designer from Belarus, now based in Poland. I have a BA in Graphic Design and a diverse background in visual storytelling.
           </p>
           <p className="text-gray-600 leading-relaxed mb-6">
-            Our journey began with a simple belief: that beautiful design should be accessible to everyone. 
-            Each piece in our collection is carefully curated and crafted to bring joy, inspiration, 
-            and artistic expression to your home or workspace.
+            Over the years, I’ve illustrated and designed books for both children and adults, created covers for print and audiobooks, and worked with platforms like Storytel. My experience also includes storyboarding and visual storytelling for animated videos on various topics.
+          </p>
+          <p className="text-gray-600 leading-relaxed mb-6">
+            I enjoy shaping ideas through illustration, clay, and digital tools. I also design and build simple websites — often collaborating with AI in the process.
           </p>
           <p className="text-gray-600 leading-relaxed">
-            From minimalist designs to bold artistic statements, we offer a diverse range of styles 
-            to suit every taste and interior. Quality is at the heart of everything we do, ensuring 
-            that each print meets the highest standards of craftsmanship.
+            I'm open to freelance projects, commissions, and creative collaborations. Feel free to reach out!
           </p>
         </div>
       </div>

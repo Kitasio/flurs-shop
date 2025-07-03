@@ -15,16 +15,16 @@ export default function NavigationButtons() {
 
         {/* PORTFOLIO */}
         <a
-          href="/portfolio"
+          href="#"
           className="absolute top-[19%] left-[24%] w-[30%] hover:scale-101 transition-transform"
         >
-          <img src="https://flurs.fly.storage.tigris.dev/web/portfolio.svg" alt="Stockists" className="w-full h-auto" />
+          <img src="https://flurs.fly.storage.tigris.dev/web/coming_soon.svg" alt="Stockists" className="w-full h-auto" />
         </a>
 
         {/* ARCHIVE */}
         <a
-          href="/archive"
-          className="absolute top-[30%] right-[5.21%] w-[38%] hover:scale-101 transition-transform"
+         href="#"
+         className="absolute top-[30%] right-[5.21%] w-[38%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/archive.svg" alt="Archive" className="w-full h-auto" />
         </a>
@@ -38,42 +38,42 @@ export default function NavigationButtons() {
         </a>
         {/* Grass */}
         <a
-          href="/grass"
+          href="#"
           className="absolute top-[60%] left-[5.21%] w-[47%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/Group 5.svg" alt="Archive" className="w-full h-auto" />
         </a>
         {/* Flower */}
         <a
-          href="/flower"
+          href="#"
           className="absolute top-[5.56%] left-[23%] w-[10.42%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/flower.svg" alt="Archive" className="w-full h-auto" />
         </a>
         {/* Flower2 */}
         <a
-          href="/flower"
+          href="#"
           className="absolute top-[5.56%] left-[31%] w-[10.42%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/flower.svg" alt="Archive" className="w-full h-auto" />
         </a>
         {/* Flower3 */}
         <a
-          href="/flower"
+          href="#"
           className="absolute top-[94%] right-[30%] w-[15%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/flowers.svg" alt="Archive" className="w-full h-auto" />
         </a>
         {/* Flower3 */}
         <a
-          href="/flower"
+          href="#"
           className="absolute top-[94%] right-[4%] w-[15%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/flowers.svg" alt="Archive" className="w-full h-auto" />
         </a>
         {/* Flower3 */}
         <a
-          href="/flower"
+          href="#"
           className="absolute top-[94%] right-[17%] w-[15%] hover:scale-101 transition-transform"
         >
           <img src="https://flurs.fly.storage.tigris.dev/web/flowers.svg" alt="Archive" className="w-full h-auto" />

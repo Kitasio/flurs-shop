@@ -30,10 +30,9 @@ export default function ContactPage() {
           <div>
             <h3 className="text-sm font-medium text-gray-800 mb-1">Instagram</h3>
             {/* Replace with actual Instagram link if available */}
-            <span className="text-gray-500 italic">(Instagram link not provided)</span>
-            {/* <a href="https://instagram.com/your_instagram" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900">
-              @your_instagram
-            </a> */}
+             <a href="https://www.instagram.com/kurshuk_lydia/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900">
+              @kurshuk_lydia
+            </a> 
           </div>
         </div>
       </div>
