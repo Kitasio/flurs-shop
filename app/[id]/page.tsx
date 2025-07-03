@@ -49,14 +49,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Product Details Layout */}
       <div className="px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-14">
           {/* Left Column - Product Images */}
-          <div className="h-fit top-8 lg:col-span-3">
-            <ImageGallery images={poster.images.data} productName={poster.name} />
-          </div>
+          <div className="h-fit top-8 lg:col-span-5 flex">
+  <div className="w-full max-w-[800px]">
+    <ImageGallery images={poster.images.data} productName={poster.name} />
+  </div>
+</div>
 
           {/* Right Column - Product Info */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-3">
             <ProductClient poster={poster} />
           </div>
 
