@@ -74,23 +74,23 @@ export default function ProductClient ({ poster }: ProductClientProps) {
     <div className="flex flex-col">
       <h2 className="text-4xl font-serif mb-2">{poster.name}</h2>
 
-     <p className="text-lg text-gray-600 mb-6 italic">
+     <p className="text-lg text-stone-600 mb-6 italic">
   from ${displayedPrice.toFixed(2)}
   {selectedFormat && (
-    <span className="text-sm text-gray-500 ml-2">
+    <span className="text-sm text-stone-500 ml-2">
       (Format: {selectedFormat})
     </span>
   )}
 </p>
 
       {/* Description */}
-      <p dangerouslySetInnerHTML={{ __html: poster.description }} className="text-gray-600 mb-6"></p>
+      <p dangerouslySetInnerHTML={{ __html: poster.description }} className="text-stone-600 mb-6"></p>
 
       {/* Available Formats Info */}
       <div className="mb-8">
         <h3 className="text-sm font-medium mb-2">Available formats:</h3>
         {poster.formats.data.map(format => (
-          <p key={format.name} className="text-gray-600 text-sm">
+          <p key={format.name} className="text-stone-600 text-sm">
             {format.name} - ${format.price.toFixed(2)}
           </p>
         ))}
@@ -100,8 +100,8 @@ export default function ProductClient ({ poster }: ProductClientProps) {
       <div className="space-y-6">
         {/* Format Selector */}
         <div>
-          <label htmlFor="format" className="block text-sm font-medium text-gray-700 mb-2">
-            FORMAT: *
+          <label htmlFor="format" className="block text-sm font-medium text-stone-700 mb-2">
+            FORMAT:
           </label>
           <select
             id="format"
@@ -112,7 +112,7 @@ export default function ProductClient ({ poster }: ProductClientProps) {
               setShowSuccessMessage(false);
             }}
             required
-            className={`w-full p-3 border bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedFormat ? 'border-red-500' : 'border-gray-300'}`}
+            className={`w-full p-3 border bg-stone-50 focus:ring-1 focus:ring-stone-500 focus:border-stone-500 ${errorMessage && !selectedFormat ? 'border-red-500' : 'border-stone-300'}`}
             aria-describedby={errorMessage && !selectedFormat ? "format-error" : undefined}
           >
             <option value="" disabled>SELECT FORMAT</option>
@@ -130,7 +130,7 @@ export default function ProductClient ({ poster }: ProductClientProps) {
         {/* Color Selector (only if poster has colors) */}
         {poster.colors && poster.colors.length > 0 && (
           <div>
-            <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="color" className="block text-sm font-medium text-stone-700 mb-2">
               COLOR: *
             </label>
             <select
@@ -142,7 +142,7 @@ export default function ProductClient ({ poster }: ProductClientProps) {
                 setShowSuccessMessage(false);
               }}
               required
-              className={`w-full p-3 border bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 ${errorMessage && !selectedColor ? 'border-red-500' : 'border-gray-300'}`}
+              className={`w-full p-3 border bg-stone-50 focus:ring-1 focus:ring-stone-500 focus:border-stone-500 ${errorMessage && !selectedColor ? 'border-red-500' : 'border-stone-300'}`}
               aria-describedby={errorMessage && !selectedColor ? "color-error" : undefined}
             >
               <option value="" disabled>SELECT COLOR</option>
@@ -160,7 +160,7 @@ export default function ProductClient ({ poster }: ProductClientProps) {
 
         {/* Quantity Selector */}
         <div>
-          <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="quantity" className="block text-sm font-medium text-stone-700 mb-2">
             QUANTITY:
           </label>
           <input
@@ -170,18 +170,18 @@ export default function ProductClient ({ poster }: ProductClientProps) {
             max={poster.inventory || undefined}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(1, Number.parseInt(e.target.value, 10) || 1))}
-            className="w-32 p-3 border border-gray-300 bg-gray-50 focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+            className="w-32 p-3 border border-stone-300 bg-stone-50 focus:ring-1 focus:ring-stone-500 focus:border-stone-500"
           />
-          {poster.inventory && (
-            <p className="text-sm text-gray-500 mt-1">{poster.inventory} in stock</p>
-          )}
+          {poster.inventory !== undefined && poster.inventory !== null && (
+           <p className="text-sm text-stone-500 mt-1">{poster.inventory} in stock</p>
+        )}
         </div>
 
         {/* Add to Cart Button */}
         <button
           type="button"
           onClick={handleAddToCart}
-          className="w-full bg-gray-900 text-white py-3 px-6 hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+          className="w-full bg-stone-900 text-white py-3 px-6 hover:bg-stone-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-900"
         >
           ADD TO CART
         </button>
